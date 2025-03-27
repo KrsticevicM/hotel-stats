@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <h1>Hotel Statistics</h1>
+
+    <h2>Most Booked Hotels</h2>
+    <ul>
+        {% for hotel in statistics.most_booked_hotels %}
+            <li>{{ hotel.hotel.value }}: {{ hotel.count.value }} reservations</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Reservations per Month</h2>
+    <ul>
+        {% for month in statistics.reservations_per_month %}
+            <li>Month: {{ month.month.value }} - Reservations: {{ month.count.value }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Average Number of Reservations</h2>
+    <p>{{ statistics.average_reservations.0.avg.value }}</p>
+
+    <h2>Cancellations per Month</h2>
+    <ul>
+        {% for month in statistics.cancellations_per_month %}
+            <li>Month: {{ month.month.value }} - Cancellations: {{ month.count.value }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Top Countries by Reservations</h2>
+    <ul>
+        {% for country in statistics.top_countries %}
+            <li>{{ country.country.value }}: {{ country.count.value }} reservations</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
