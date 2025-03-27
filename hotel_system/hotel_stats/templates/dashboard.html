@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hotel Dashboard</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -26,10 +27,15 @@
             <!-- Reservations by Month -->
             <div class="stats-card" id="reservationsByMonth">
                 <h3>Reservations by Month</h3>
-                <ul>
-                    <!-- Empty placeholder for dynamic content -->
-                    <li class="placeholder">Data will appear here</li>
-                </ul>
+
+                <!-- Year Selection Dropdown -->
+                <label for="yearSelect">Select Year:</label>
+                <select id="yearFilter">
+                    <option value="2023">2023</option>
+                    <option value="2024">2024</option>
+                </select>
+
+                <canvas id="reservationsChart"></canvas>
             </div>
 
             <!-- Cancellations per Month -->
@@ -42,10 +48,9 @@
             </div>
 
             <div class="stats-card" id="topCountries">
-                <h3>Cancellations by Month</h3>
+                <h3>Top Countries</h3>
                 <ul>
-                    <!-- Empty placeholder for dynamic content -->
-                    <li class="placeholder">Data will appear here</li>
+                    <li class="placeholder">List of top 10 countries from all visitors</li>
                 </ul>
             </div>
         </div>
