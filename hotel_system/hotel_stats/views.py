@@ -8,83 +8,48 @@ def home(request):
 # SPARQL endpoint for your GraphDB instance 
 #GRAPHDB_ENDPOINT = 'http://localhost:7200/repositories/your-repository'
 
-#primjer
 def dashboard(request):
-    # Mock data representing the statistics
-    statistics = {
-        'most_booked_hotels': [
-            {'hotel': {'value': 'Resort Hotel'}, 'count': {'value': '1500'}},
-            {'hotel': {'value': 'City Hotel'}, 'count': {'value': '1300'}}
-        ],
-        'reservations_per_month': [
-            {'month': {'value': 'January'}, 'count': {'value': '120'}},
-            {'month': {'value': 'February'}, 'count': {'value': '130'}},
-            {'month': {'value': 'March'}, 'count': {'value': '110'}}
-        ],
-        'average_reservations': [
-            {'avg': {'value': '115'}}
-        ],
-        'cancellations_per_month': [
-            {'month': {'value': 'January'}, 'count': {'value': '20'}},
-            {'month': {'value': 'February'}, 'count': {'value': '25'}},
-            {'month': {'value': 'March'}, 'count': {'value': '18'}}
-        ],
-        'top_countries': [
-            {'country': {'value': 'USA'}, 'count': {'value': '500'}},
-            {'country': {'value': 'UK'}, 'count': {'value': '300'}},
-            {'country': {'value': 'Germany'}, 'count': {'value': '250'}}
-        ]
-    }
+   # Mock data for Hotel Distribution (Type of Hotels)
+   hotel_distribution = [
+      {'hotel': 'Resort Hotel', 'count': 1500},
+      {'hotel': 'City Hotel', 'count': 1300}
+   ]
 
-    return render(request, 'dashboard.html', {'statistics': statistics})
-'''
-def dashboard(request):
-   # Example SPARQL queries to fetch the statistics
-   queries = {
-      'most_booked_hotels': """
-         SELECT ?hotel (COUNT(?reservation) AS ?count) 
-         WHERE {
-               ?reservation <http://example.org/schema/hotel> ?hotel .
-         }
-         GROUP BY ?hotel
-         ORDER BY DESC(?count)
-         LIMIT 5
-      """,
-      'reservations_per_month': """
-         SELECT (MONTH(?date) AS ?month) (COUNT(?reservation) AS ?count)
-         WHERE {
-               ?reservation <http://example.org/schema/date> ?date .
-         }
-         GROUP BY (MONTH(?date))
-         ORDER BY ?month
-      """,
-      'average_reservations': """
-         SELECT (AVG(?count) AS ?avg)
-         WHERE {
-               ?reservation <http://example.org/schema/numberOfReservations> ?count .
-         }
-      """,
-      'cancellations_per_month': """
-         SELECT (MONTH(?date) AS ?month) (COUNT(?cancellation) AS ?count)
-         WHERE {
-               ?cancellation <http://example.org/schema/date> ?date .
-               ?cancellation <http://example.org/schema/status> "Cancelled" .
-         }
-         GROUP BY (MONTH(?date))
-         ORDER BY ?month
-      """
+   # Mock data for Reservations per Month
+   reservations_per_month = [
+      {'month': 'January', 'count': 120},
+      {'month': 'February', 'count': 130},
+      {'month': 'March', 'count': 110}
+   ]
+
+   # Mock data for Cancellations per Month
+   cancellations_per_month = [
+      {'month': 'January', 'count': 20},
+      {'month': 'February', 'count': 25},
+      {'month': 'March', 'count': 18}
+   ]
+
+   # Mock data for Top Countries by Reservations
+   top_countries = [
+      {'country': 'USA', 'count': 500},
+      {'country': 'UK', 'count': 300},
+      {'country': 'Germany', 'count': 250}
+   ]
+
+   # Mock data for World Map (assuming this represents visitor locations)
+   world_map = [
+      {'country': 'USA', 'lat': 37.0902, 'lon': -95.7129, 'reservations': 500},
+      {'country': 'UK', 'lat': 51.5074, 'lon': -0.1278, 'reservations': 300},
+      {'country': 'Germany', 'lat': 51.1657, 'lon': 10.4515, 'reservations': 250}
+   ]
+
+   # Context to send to the template
+   context = {
+      'hotel_distribution': hotel_distribution,
+      'reservations_per_month': reservations_per_month,
+      'cancellations_per_month': cancellations_per_month,
+      'top_countries': top_countries,
+      'world_map': world_map,
    }
 
-   statistics = {}
-   
-   # Make SPARQL requests to fetch data for each statistic
-   for key, query in queries.items():
-      response = requests.get(
-         GRAPHDB_ENDPOINT,
-         params={'query': query, 'format': 'application/json'}
-      )
-      data = response.json()
-      statistics[key] = data['results']['bindings']
-   
-   return render(request, 'dashboard.html', {'statistics': statistics})
-'''
+   return render(request, 'dashboard.html', context)
