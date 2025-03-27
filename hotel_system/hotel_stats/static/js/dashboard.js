@@ -17,15 +17,6 @@ document.addEventListener("DOMContentLoaded", function() {
         { country: 'United Kingdom', count: 120 },
         { country: 'France', count: 100 },
     ];
-
-    // Populating "Average Stay per Month"
-    const averageStayList = document.querySelector('#averageStay ul');
-    stayData.forEach(data => {
-        const li = document.createElement('li');
-        li.textContent = `${data.month}: ${data.nights} nights`;
-        averageStayList.appendChild(li);
-    });
-
     // Populating "Cancellations per Month"
     const cancellationsList = document.querySelector('#cancellationsByMonth ul');
     cancellationData.forEach(data => {
@@ -45,9 +36,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
 // Reservations by month
 document.addEventListener("DOMContentLoaded", function () {
-    const ctx = document.getElementById("reservationsChart").getContext("2d");
-    let reservationsChart;
+    const reservationsCtx = document.getElementById("reservationsChart").getContext("2d");
+    const averageStayCtx = document.getElementById("averageStayChart").getContext("2d");
 
+    let reservationsChart, averageStayChart;
+
+    // Fetch reservations data for a specific year
     function fetchReservations(year) {
         fetch(`/api/reservations/?year=${year}`)
             .then(response => {
@@ -56,14 +50,31 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
                 return response.json();
             })
-            .then(data => updateChart(data))
+            .then(data => updateReservationsChart(data))
             .catch(error => {
                 console.warn(error.message);
-                useMockData(year);
+                useMockReservationsData(year);
             });
     }
 
-    function updateChart(data) {
+    // Fetch average stay data for a specific year
+    function fetchAverageStay(year) {
+        fetch(`/api/average-stay/?year=${year}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("API not available, using mock data...");
+                }
+                return response.json();
+            })
+            .then(data => updateAverageStayChart(data))
+            .catch(error => {
+                console.warn(error.message);
+                useMockAverageStayData(year);
+            });
+    }
+
+    // Update the Reservations chart
+    function updateReservationsChart(data) {
         const labels = data.map(entry => entry.month);
         const counts = data.map(entry => entry.count);
 
@@ -72,7 +83,7 @@ document.addEventListener("DOMContentLoaded", function () {
             reservationsChart.data.datasets[0].data = counts;
             reservationsChart.update();
         } else {
-            reservationsChart = new Chart(ctx, {
+            reservationsChart = new Chart(reservationsCtx, {
                 type: "bar",
                 data: {
                     labels: labels,
@@ -86,15 +97,44 @@ document.addEventListener("DOMContentLoaded", function () {
                 },
                 options: {
                     responsive: true,
-                    scales: {
-                        y: { beginAtZero: true }
-                    }
+                    scales: { y: { beginAtZero: true } }
                 }
             });
         }
     }
 
-    function useMockData(year) {
+    // Update the Average Stay chart
+    function updateAverageStayChart(data) {
+        const labels = data.map(entry => entry.month);
+        const stays = data.map(entry => entry.avgStay);
+
+        if (averageStayChart) {
+            averageStayChart.data.labels = labels;
+            averageStayChart.data.datasets[0].data = stays;
+            averageStayChart.update();
+        } else {
+            averageStayChart = new Chart(averageStayCtx, {
+                type: "line",
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: "Average Stay per Night",
+                        data: stays,
+                        backgroundColor: "rgba(75, 192, 192, 0.6)",
+                        borderColor: "rgba(75, 192, 192, 1)",
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: { y: { beginAtZero: true } }
+                }
+            });
+        }
+    }
+
+    // Use mock data for Reservations chart (when the API fails)
+    function useMockReservationsData(year) {
         const mockData = {
             "2023": [
                 { month: "January", count: 120 },
@@ -115,14 +155,47 @@ document.addEventListener("DOMContentLoaded", function () {
         };
 
         const data = mockData[year] || mockData["2024"]; // Default to 2024 mock data
-        updateChart(data);
+        updateReservationsChart(data);
     }
 
-    // Fetch data for the default year (2024)
-    fetchReservations("2024");
+    // Use mock data for Average Stay chart (when the API fails)
+    function useMockAverageStayData(year) {
+        const mockData = {
+            "2023": [
+                { month: "January", avgStay: 5 },
+                { month: "February", avgStay: 4.5 },
+                { month: "March", avgStay: 6 },
+                { month: "April", avgStay: 5.2 },
+                { month: "May", avgStay: 5.7 },
+                { month: "June", avgStay: 6.1 }
+            ],
+            "2024": [
+                { month: "January", avgStay: 7 },
+                { month: "February", avgStay: 5.5 },
+                { month: "March", avgStay: 6.2 },
+                { month: "April", avgStay: 6.1 },
+                { month: "May", avgStay: 6.8 },
+                { month: "June", avgStay: 7.3 }
+            ]
+        };
 
-    // Event listener for year filter dropdown
-    document.getElementById("yearFilter").addEventListener("change", function () {
-        fetchReservations(this.value);
+        const data = mockData[year] || mockData["2024"];
+        updateAverageStayChart(data);
+    }
+
+    // Fetch data for default year (2024)
+    fetchReservations("2024");
+    fetchAverageStay("2024");
+
+    // Event listener for year filter dropdown (Reservations per Month)
+    document.getElementById("yearFilterRes").addEventListener("change", function () {
+        const selectedYear = this.value;
+        fetchReservations(selectedYear); // Only update reservations chart
+    });
+
+    // Event listener for year filter dropdown (Average Stay per Month)
+    document.getElementById("yearFilterAvgStay").addEventListener("change", function () {
+        const selectedYear = this.value;
+        fetchAverageStay(selectedYear); // Only update average stay chart
     });
 });

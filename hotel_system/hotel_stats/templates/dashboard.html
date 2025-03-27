@@ -15,9 +15,9 @@
 
         <!-- Stats Sections -->
         <div class="stats-section">
-            <!-- Average Stay per Month -->
-            <div class="stats-card" id="averageStay">
-                <h3>Average Stay per Month</h3>
+            <!-- Cancellations per Month -->
+            <div class="stats-card" id="cancellationsByMonth">
+                <h3>Cancellations by Month</h3>
                 <ul>
                     <!-- Empty placeholder for dynamic content -->
                     <li class="placeholder">Data will appear here</li>
@@ -26,11 +26,11 @@
 
             <!-- Reservations by Month -->
             <div class="stats-card" id="reservationsByMonth">
-                <h3>Reservations by Month</h3>
+                <h3>Reservations per Month</h3>
 
                 <!-- Year Selection Dropdown -->
                 <label for="yearSelect">Select Year:</label>
-                <select id="yearFilter">
+                <select id="yearFilterRes">
                     <option value="2023">2023</option>
                     <option value="2024">2024</option>
                 </select>
@@ -38,13 +38,15 @@
                 <canvas id="reservationsChart"></canvas>
             </div>
 
-            <!-- Cancellations per Month -->
-            <div class="stats-card" id="cancellationsByMonth">
-                <h3>Cancellations by Month</h3>
-                <ul>
-                    <!-- Empty placeholder for dynamic content -->
-                    <li class="placeholder">Data will appear here</li>
-                </ul>
+            <!-- Average Stay per Month -->
+            <div class="stats-card" id="averageStay">
+                <h3>Average Stay per Month</h3>
+                <label for="yearSelect">Select Year:</label>
+                <select id="yearFilterAvgStay">
+                    <option value="2023">2023</option>
+                    <option value="2024">2024</option>
+                </select>
+                <canvas id="averageStayChart"></canvas>
             </div>
 
             <div class="stats-card" id="topCountries">
