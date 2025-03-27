@@ -1,45 +1,58 @@
-// Reservations per Month Histogram
-var ctx = document.getElementById('reservationsChart').getContext('2d');
-var reservationsChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: ['January', 'February', 'March'],  // Replace with dynamic data
-        datasets: [{
-            label: 'Reservations per Month',
-            data: [120, 130, 110],  // Replace with dynamic data
-            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-            borderColor: 'rgba(54, 162, 235, 1)',
-            borderWidth: 1
-        }]
-    },
-    options: {
-        responsive: true,
-        scales: {
-            y: {
-                beginAtZero: true
-            }
-        }
-    }
+document.addEventListener("DOMContentLoaded", function() {
+    // Example mock data (replace with data from GraphDB)
+    const stayData = [
+        { month: 'January', nights: 5 },
+        { month: 'February', nights: 4 },
+        { month: 'March', nights: 6 },
+    ];
+
+    const reservationData = [
+        { month: 'January', count: 120 },
+        { month: 'February', count: 95 },
+        { month: 'March', count: 110 },
+    ];
+
+    const cancellationData = [
+        { month: 'January', count: 30 },
+        { month: 'February', count: 20 },
+        { month: 'March', count: 25 },
+    ];
+
+    const countriesData = [
+        { country: 'Portugal', count: 150 },
+        { country: 'United Kingdom', count: 120 },
+        { country: 'France', count: 100 },
+    ];
+
+    // Populating "Average Stay per Month"
+    const averageStayList = document.querySelector('#averageStay ul');
+    stayData.forEach(data => {
+        const li = document.createElement('li');
+        li.textContent = `${data.month}: ${data.nights} nights`;
+        averageStayList.appendChild(li);
+    });
+
+    // Populating "Reservations by Month"
+    const reservationsList = document.querySelector('#reservationsByMonth ul');
+    reservationData.forEach(data => {
+        const li = document.createElement('li');
+        li.textContent = `${data.month}: ${data.count} Reservations`;
+        reservationsList.appendChild(li);
+    });
+
+    // Populating "Cancellations per Month"
+    const cancellationsList = document.querySelector('#cancellationsByMonth ul');
+    cancellationData.forEach(data => {
+        const li = document.createElement('li');
+        li.textContent = `${data.month}: ${data.count} Cancellations`;
+        cancellationsList.appendChild(li);
+    });
+
+    // Populating "Top Countries"
+    const countriesList = document.querySelector('#topCountries ul');
+    countriesData.forEach(data => {
+        const li = document.createElement('li');
+        li.textContent = `${data.country}: ${data.count} Reservations`;
+        countriesList.appendChild(li);
+    });
 });
-
-
-var map = L.map('worldMap').setView([20, 0], 2);  // Default view (latitude, longitude, zoom level)
-
-// Add Mapbox tile layer (you can use your own tile service)
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-}).addTo(map);
-
-// Example: Adding markers for top countries (Replace with dynamic data)
-var countries = [
-    { country: 'USA', lat: 37.0902, lon: -95.7129, reservations: 500 },
-    { country: 'UK', lat: 51.5074, lon: -0.1278, reservations: 300 },
-    { country: 'Germany', lat: 51.1657, lon: 10.4515, reservations: 250 }
-];
-
-countries.forEach(function(country) {
-    L.marker([country.lat, country.lon])
-        .addTo(map)
-        .bindPopup("<b>" + country.country + "</b><br>Reservations: " + country.reservations);
-});
-

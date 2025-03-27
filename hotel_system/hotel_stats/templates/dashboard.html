@@ -6,43 +6,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hotel Dashboard</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <script src="{% static 'js/dashboard.js' %}"></script>
 </head>
+
 <body>
-    <h1>Hotel Statistics Dashboard</h1>
+    <div class="container">
+        <h1>Hotel Statistics Dashboard</h1>
 
-    <h2>Hotel Distribution (Type of Hotels)</h2>
-    <ul>
-        {% for hotel in hotel_distribution %}
-            <li>{{ hotel.hotel }}: {{ hotel.count }} reservations</li>
-        {% endfor %}
-    </ul>
+        <!-- Stats Sections -->
+        <div class="stats-section">
+            <!-- Average Stay per Month -->
+            <div class="stats-card" id="averageStay">
+                <h3>Average Stay per Month</h3>
+                <ul>
+                    <!-- Empty placeholder for dynamic content -->
+                    <li class="placeholder">Data will appear here</li>
+                </ul>
+            </div>
 
-    <h2>Reservations per Month</h2>
-    <ul>
-        {% for month in reservations_per_month %}
-            <li>Month: {{ month.arrival_date_month }} - Reservations: {{ month.count }}</li>
-        {% endfor %}
-    </ul>
+            <!-- Reservations by Month -->
+            <div class="stats-card" id="reservationsByMonth">
+                <h3>Reservations by Month</h3>
+                <ul>
+                    <!-- Empty placeholder for dynamic content -->
+                    <li class="placeholder">Data will appear here</li>
+                </ul>
+            </div>
 
-    <h2>Cancellations per Month</h2>
-    <ul>
-        {% for month in cancellations_per_month %}
-            <li>Month: {{ month.arrival_date_month }} - Cancellations: {{ month.count }}</li>
-        {% endfor %}
-    </ul>
+            <!-- Cancellations per Month -->
+            <div class="stats-card" id="cancellationsByMonth">
+                <h3>Cancellations by Month</h3>
+                <ul>
+                    <!-- Empty placeholder for dynamic content -->
+                    <li class="placeholder">Data will appear here</li>
+                </ul>
+            </div>
 
-    <h2>Top Countries by Reservations</h2>
-    <ul>
-        {% for country in top_countries %}
-            <li>{{ country.country }}: {{ country.count }} reservations</li>
-        {% endfor %}
-    </ul>
+            <div class="stats-card" id="topCountries">
+                <h3>Cancellations by Month</h3>
+                <ul>
+                    <!-- Empty placeholder for dynamic content -->
+                    <li class="placeholder">Data will appear here</li>
+                </ul>
+            </div>
+        </div>
+    </div>
 
-    <h2>World Map of Visitor Locations</h2>
-    <div id="worldMap" style="height: 400px;"></div>
-
-    <!-- Other sections for future functionalities (like charts) -->
-
+    <!-- Add JS File -->
+    <script src="{% static 'js/dashboard.js' %}"></script>
 </body>
 </html>
