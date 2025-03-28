@@ -1,11 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Manage Reservations{% endblock %}</title>
+    <title>Manage Reservations</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
-    <h1>Welcome!</h1>
+
+    <div class="container">
+        <h1>Manage Reservations</h1>
+
+        <!-- Add Reservation Section -->
+        <div class="stats-card" id="addReservation">
+            <h3>Add New Reservation</h3>
+            <form id="addReservationForm">
+                <div class="form-group">
+                    <label for="hotel">Hotel</label>
+                    <input type="text" id="hotel" name="hotel" required>
+
+                    <label for="arrivalDate">Arrival Date</label>
+                    <input type="date" id="arrivalDate" name="arrival_date" required>
+
+                    <label for="adults">Adults</label>
+                    <input type="number" id="adults" name="adults" required>
+
+                    <label for="children">Children</label>
+                    <input type="number" id="children" name="children" required>
+
+                    <label for="country">Country</label>
+                    <input type="text" id="country" name="country" required>
+
+                    <button type="submit" class="manage-link">Add Reservation</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Modify Reservation Section -->
+        <div class="stats-card" id="modifyReservation">
+            <h3>Modify Reservation</h3>
+            <form id="modifyReservationForm">
+                <div class="form-group">
+                    <label for="modifyReservationID">Reservation ID</label>
+                    <input type="text" id="modifyReservationID" name="reservation_id" required>
+
+                    <label for="modifyHotel">Hotel</label>
+                    <input type="text" id="modifyHotel" name="hotel" required>
+
+                    <label for="modifyArrivalDate">Arrival Date</label>
+                    <input type="date" id="modifyArrivalDate" name="arrival_date" required>
+
+                    <button type="submit" class="manage-link">Modify Reservation</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Delete Reservation Section -->
+        <div class="stats-card" id="deleteReservation">
+            <h3>Delete Reservation</h3>
+            <form id="deleteReservationForm">
+                <div class="form-group">
+                    <label for="deleteReservationID">Reservation ID</label>
+                    <input type="text" id="deleteReservationID" name="reservation_id" required>
+
+                    <button type="submit" class="manage-link">Delete Reservation</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Link to go back to the dashboard or any other page -->
+        <div class="manage-link-container">
+            <a href="/" class="manage-link">Back to Dashboard</a>
+        </div>
+    </div>
+
 </body>
 </html>
