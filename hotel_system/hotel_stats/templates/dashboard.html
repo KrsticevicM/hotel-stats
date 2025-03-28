@@ -10,6 +10,7 @@
 </head>
 
 <body>
+
     <div class="container">
         <h1>Hotel Statistics Dashboard</h1>
 
@@ -28,8 +29,9 @@
                 <!-- Year Selection Dropdown -->
                 <label for="yearSelect">Select Year:</label>
                 <select id="yearFilterRes">
-                    <option value="2023">2023</option>
-                    <option value="2024">2024</option>
+                    <option value="2015">2015</option>
+                    <option value="2016">2016</option>
+                    <option value="2017" selected>2017</option>
                 </select>
 
                 <canvas id="reservationsChart"></canvas>
@@ -40,8 +42,9 @@
                 <h3>Average Stay per Month</h3>
                 <label for="yearSelect">Select Year:</label>
                 <select id="yearFilterAvgStay">
-                    <option value="2023">2023</option>
-                    <option value="2024">2024</option>
+                    <option value="2015">2015</option>
+                    <option value="2016">2016</option>
+                    <option value="2017" selected>2017</option>
                 </select>
                 <canvas id="averageStayChart"></canvas>
             </div>
@@ -60,6 +63,14 @@
         </div>
         
     </div>
+
+    <script type="application/json" id="meals-data">
+        {{ most_popular_meals|safe }}
+    </script>
+
+    <script type="application/json" id="countries-data">
+        {{ top_countries|safe }}
+    </script>
 
     <!-- Add JS File -->
     <script src="{% static 'js/dashboard.js' %}"></script>

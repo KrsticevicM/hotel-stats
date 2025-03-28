@@ -1,45 +1,42 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+import json
+from django.http import JsonResponse
+from hotel_queries.hotelstats_queries import get_meals_data, get_countries_count, get_stays_per_month, get_reservations_per_month
 
 def manage_reservations(request):
     # You can fetch existing reservations here if needed
     return render(request, 'manage_reservations.html')
 
+def get_avgstay_data(request):
+   year = request.GET.get('year')
+   #print(year)
+
+   all_data = get_stays_per_month()
+
+   data = all_data.get(str(year), [])
+   #print(data)
+
+   return JsonResponse(data, safe=False)
+
+def get_reservation_data(request):
+   year = request.GET.get('year')
+
+   all_data = get_reservations_per_month()
+
+   data = all_data.get(str(year), [])
+   #print(data)
+
+   return JsonResponse(data, safe=False)
+
 def dashboard(request):
 
-   stay_per_month = [
-      {"arrival_date_month": "January", "stays_in_weekend_nights": 2, "stays_in_week_nights": 3},
-      {"arrival_date_month": "February", "stays_in_weekend_nights": 1, "stays_in_week_nights": 4},
-      {"arrival_date_month": "March", "stays_in_weekend_nights": 3, "stays_in_week_nights": 2},
-    ]
+   most_popular_meals = json.dumps(get_meals_data())
 
-   # Mock data for Reservations per Month
-   reservations_per_month = [
-      {"arrival_date_month": "January", "count": 120},
-      {"arrival_date_month": "February", "count": 95},
-      {"arrival_date_month": "March", "count": 110},
-    ]
-
-   # New: Most Popular Meals
-   most_popular_meals = [
-        {"meal": "Breakfast", "count": 500},
-        {"meal": "Half-board", "count": 300},
-        {"meal": "Full-board", "count": 200},
-   ]
-
-   # Mock data for Top Countries by Reservations
-   top_countries = [
-        {"country": "Portugal", "count": 150},
-        {"country": "United Kingdom", "count": 120},
-        {"country": "France", "count": 100},
-   ]
-
+   top_countries = json.dumps(get_countries_count())
 
    context = {
       "most_popular_meals": most_popular_meals,
-      "reservations_per_month": reservations_per_month,
-      "stay_per_month": stay_per_month,
       "top_countries": top_countries,
-    }
+   }
 
    return render(request, 'dashboard.html', context)

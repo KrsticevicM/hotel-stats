@@ -1,30 +1,29 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const mealsCtx = document.getElementById("mealsChart").getContext("2d");
+    //console.log(document.getElementById("meals-data").textContent);
+    const mealsData = JSON.parse(document.getElementById("meals-data").textContent);
+    //console.log(mealsData);
 
-    // Mock data for Most Popular Meals
-    const mealsData = [
-        { meal: "Breakfast", count: 500 },
-        { meal: "Half-board", count: 300 },
-        { meal: "Full-board", count: 200 },
-    ];
-
-    // Extract labels and values
     const labels = mealsData.map(data => data.meal);
     const values = mealsData.map(data => data.count);
 
-    // Render Pie Chart
+    const backgroundColors = mealsData.map(() => 
+        `#${Math.floor(Math.random() * 16777215).toString(16)}`
+    );
+
+    const mealsCtx = document.getElementById("mealsChart").getContext("2d");
+
     new Chart(mealsCtx, {
         type: "pie",
         data: {
             labels: labels,
             datasets: [{
                 data: values,
-                backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
+                backgroundColor: backgroundColors,
                 hoverOffset: 4
             }]
         },
         options: {
-            responsive: false,
+            responsive: true,
             plugins: {
                 legend: { position: "right" }
             }
@@ -52,7 +51,7 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(data => updateReservationsChart(data))
             .catch(error => {
                 console.warn(error.message);
-                useMockReservationsData(year);
+               //useMockReservationsData(year);
             });
     }
 
@@ -68,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(data => updateAverageStayChart(data))
             .catch(error => {
                 console.warn(error.message);
-                useMockAverageStayData(year);
+                //useMockAverageStayData(year);
             });
     }
 
@@ -104,8 +103,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Update the Average Stay chart
     function updateAverageStayChart(data) {
+        //console.log(data)
+
         const labels = data.map(entry => entry.month);
         const stays = data.map(entry => entry.avgStay);
+
+        //console.log(labels)
+        //console.log(stays)
 
         if (averageStayChart) {
             averageStayChart.data.labels = labels;
@@ -132,59 +136,9 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Use mock data for Reservations chart (when the API fails)
-    function useMockReservationsData(year) {
-        const mockData = {
-            "2023": [
-                { month: "January", count: 120 },
-                { month: "February", count: 95 },
-                { month: "March", count: 110 },
-                { month: "April", count: 130 },
-                { month: "May", count: 150 },
-                { month: "June", count: 170 }
-            ],
-            "2024": [
-                { month: "January", count: 100 },
-                { month: "February", count: 85 },
-                { month: "March", count: 90 },
-                { month: "April", count: 140 },
-                { month: "May", count: 160 },
-                { month: "June", count: 180 }
-            ]
-        };
-
-        const data = mockData[year] || mockData["2024"]; // Default to 2024 mock data
-        updateReservationsChart(data);
-    }
-
-    // Use mock data for Average Stay chart (when the API fails)
-    function useMockAverageStayData(year) {
-        const mockData = {
-            "2023": [
-                { month: "January", avgStay: 5 },
-                { month: "February", avgStay: 4.5 },
-                { month: "March", avgStay: 6 },
-                { month: "April", avgStay: 5.2 },
-                { month: "May", avgStay: 5.7 },
-                { month: "June", avgStay: 6.1 }
-            ],
-            "2024": [
-                { month: "January", avgStay: 7 },
-                { month: "February", avgStay: 5.5 },
-                { month: "March", avgStay: 6.2 },
-                { month: "April", avgStay: 6.1 },
-                { month: "May", avgStay: 6.8 },
-                { month: "June", avgStay: 7.3 }
-            ]
-        };
-
-        const data = mockData[year] || mockData["2024"];
-        updateAverageStayChart(data);
-    }
-
-    // Fetch data for default year (2024)
-    fetchReservations("2024");
-    fetchAverageStay("2024");
+    // Fetch data for default year (2017 - default)
+    fetchReservations("2017");
+    fetchAverageStay("2017");
 
     // Event listener for year filter dropdown (Reservations per Month)
     document.getElementById("yearFilterRes").addEventListener("change", function () {
@@ -203,29 +157,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const countriesList = document.querySelector('#topCountries ul');
     const countrySearchInput = document.querySelector('#countrySearch');
 
-    // Example mock data (replace with data from GraphDB when ready)
-    const countriesData = [
-        { country: 'Portugal', count: 150 },
-        { country: 'United Kingdom', count: 120 },
-        { country: 'France', count: 100 },
-        { country: 'Spain', count: 80 },
-        { country: 'Italy', count: 70 },
-        { country: 'Germany', count: 60 },
-        { country: 'United States', count: 50 },
-        { country: 'Canada', count: 45 },
-        { country: 'Australia', count: 40 },
-        { country: 'Brazil', count: 35 },
-        { country: 'India', count: 30 },
-        { country: 'Mexico', count: 25 },
-        { country: 'Japan', count: 20 },
-        { country: 'China', count: 15 },
-        { country: 'Russia', count: 10 },
-        { country: 'South Africa', count: 5 },
-        { country: 'Argentina', count: 5 },
-        { country: 'Colombia', count: 5 },
-        { country: 'Nigeria', count: 3 },
-        { country: 'Egypt', count: 2 },
-    ];
+    const countriesData = JSON.parse(document.getElementById("countries-data").textContent);
 
     // Function to populate the country list
     function populateCountries(countries) {
