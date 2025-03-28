@@ -16,26 +16,52 @@
         <div class="stats-card" id="addReservation">
             <h3>Add New Reservation</h3>
             <form id="addReservationForm">
+                <!-- Name -->
                 <div class="form-group">
-                    <label for="hotel">Hotel</label>
-                    <input type="text" id="hotel" name="hotel" required>
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" placeholder="Enter Name">
+        
+                    <!-- Email -->
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="Enter Email">
 
-                    <label for="arrivalDate">Arrival Date</label>
-                    <input type="date" id="arrivalDate" name="arrival_date" required>
-
-                    <label for="adults">Adults</label>
-                    <input type="number" id="adults" name="adults" required>
-
-                    <label for="children">Children</label>
-                    <input type="number" id="children" name="children" required>
-
+                    <!-- Hotel Type (radio buttons) -->
+                    <label for="hotelType">Hotel Type</label>
+                    <div class="radio-group">
+                        <label>
+                            <input type="radio" name="hotelType" value="Resort" id="resortHotel"> Resort Hotel
+                        </label>
+                        <label>
+                            <input type="radio" name="hotelType" value="City" id="cityHotel"> City Hotel
+                        </label>
+                    </div>
+                    <!-- Country -->
                     <label for="country">Country</label>
-                    <input type="text" id="country" name="country" required>
+                    <input type="text" id="country" name="country" placeholder="Enter Country">
+        
+                    <!-- Arrival Date -->
+                    <label for="arrivalDate">Arrival Date</label>
+                    <input type="date" id="arrivalDate" name="arrivalDate">
+        
+                    <!-- Meal Type (radio buttons) -->
+                    <label for="meal">Meal Type</label>
+                    <div class="radio-group">
+                        <label>
+                            <input type="radio" name="meal" value="BB" id="bbMeal"> BB (Bed & Breakfast)
+                        </label>
+                        <label>
+                            <input type="radio" name="meal" value="HB" id="hbMeal"> HB (Half Board)
+                        </label>
+                        <label>
+                            <input type="radio" name="meal" value="Other" id="otherMeal"> Other
+                        </label>
+                    </div>
 
                     <button type="submit" class="manage-link">Add Reservation</button>
                 </div>
             </form>
         </div>
+        
 
         <!-- Modify Reservation Section -->
         <div class="stats-card" id="modifyReservation">

@@ -139,6 +139,7 @@ h2 {
 .manage-link {
    display: inline-block;
    padding: 10px 20px;
+   margin: 10px;
    font-size: 1.1rem;
    color: #fff;
    background-color: #2c3e50;
@@ -154,4 +155,25 @@ h2 {
 
 .manage-link:active {
    transform: translateY(1px);
+}
+
+.radio-group {
+   display: flex;
+   gap: 20px;
+   justify-content: space-evenly;
+   flex-wrap: nowrap; /* Prevents wrapping */
+}
+
+.radio-group label {
+   display: inline-flex;
+   align-items: center;
+   font-size: 1rem;
+   color: #34495e;
+   white-space: nowrap; /* Prevents label text from wrapping to a new line */
+}
+
+.radio-group input[type="radio"] {
+   margin-right: 8px;
+   height: 20px;
+   width: 20px;
 }
