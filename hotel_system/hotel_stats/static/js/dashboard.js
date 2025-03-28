@@ -1,38 +1,37 @@
-document.addEventListener("DOMContentLoaded", function() {
-    // Example mock data (replace with data from GraphDB)
-    const stayData = [
-        { month: 'January', nights: 5 },
-        { month: 'February', nights: 4 },
-        { month: 'March', nights: 6 },
+document.addEventListener("DOMContentLoaded", function () {
+    const mealsCtx = document.getElementById("mealsChart").getContext("2d");
+
+    // Mock data for Most Popular Meals
+    const mealsData = [
+        { meal: "Breakfast", count: 500 },
+        { meal: "Half-board", count: 300 },
+        { meal: "Full-board", count: 200 },
     ];
 
-    const cancellationData = [
-        { month: 'January', count: 30 },
-        { month: 'February', count: 20 },
-        { month: 'March', count: 25 },
-    ];
+    // Extract labels and values
+    const labels = mealsData.map(data => data.meal);
+    const values = mealsData.map(data => data.count);
 
-    const countriesData = [
-        { country: 'Portugal', count: 150 },
-        { country: 'United Kingdom', count: 120 },
-        { country: 'France', count: 100 },
-    ];
-    // Populating "Cancellations per Month"
-    const cancellationsList = document.querySelector('#cancellationsByMonth ul');
-    cancellationData.forEach(data => {
-        const li = document.createElement('li');
-        li.textContent = `${data.month}: ${data.count} Cancellations`;
-        cancellationsList.appendChild(li);
-    });
-
-    // Populating "Top Countries"
-    const countriesList = document.querySelector('#topCountries ul');
-    countriesData.forEach(data => {
-        const li = document.createElement('li');
-        li.textContent = `${data.country}: ${data.count} Reservations`;
-        countriesList.appendChild(li);
+    // Render Pie Chart
+    new Chart(mealsCtx, {
+        type: "pie",
+        data: {
+            labels: labels,
+            datasets: [{
+                data: values,
+                backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
+                hoverOffset: 4
+            }]
+        },
+        options: {
+            responsive: false,
+            plugins: {
+                legend: { position: "right" }
+            }
+        }
     });
 });
+
 
 // Reservations by month
 document.addEventListener("DOMContentLoaded", function () {
@@ -198,4 +197,47 @@ document.addEventListener("DOMContentLoaded", function () {
         const selectedYear = this.value;
         fetchAverageStay(selectedYear); // Only update average stay chart
     });
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Example mock data (replace with data from GraphDB)
+    const countriesData = [
+        { country: 'Portugal', count: 150 },
+        { country: 'United Kingdom', count: 120 },
+        { country: 'France', count: 100 },
+        { country: 'Spain', count: 80 },
+        { country: 'Italy', count: 70 },
+        { country: 'Germany', count: 60 },
+        { country: 'United States', count: 50 },
+        { country: 'Canada', count: 45 },
+        { country: 'Australia', count: 40 },
+        { country: 'Brazil', count: 35 },
+        { country: 'India', count: 30 },
+        { country: 'Mexico', count: 25 },
+        { country: 'Japan', count: 20 },
+        { country: 'China', count: 15 },
+        { country: 'Russia', count: 10 },
+        { country: 'South Africa', count: 5 },
+        { country: 'Argentina', count: 5 },
+        { country: 'Colombia', count: 5 },
+        { country: 'Nigeria', count: 3 },
+        { country: 'Egypt', count: 2 },
+    ];
+
+    // Populating "Top Countries"
+    const countriesList = document.querySelector('#topCountries ul'); // Correct selector for ul
+    console.log(countriesList); // Make sure it's selecting the ul
+
+    countriesData.forEach((data, index) => {
+        const li = document.createElement('li');
+        li.textContent = `${index + 1}. ${data.country}: ${data.count} Reservations`;
+        countriesList.appendChild(li);
+    });
+
+    // Setting max-height and enabling scrolling
+    var maxHeight = 250;  // Define the max height for the scrollable area
+    if (countriesList.scrollHeight > maxHeight) {
+        countriesList.style.maxHeight = maxHeight + "px";  // Apply the max height
+        countriesList.style.overflowY = "auto";  // Enable vertical scrolling
+    }
 });

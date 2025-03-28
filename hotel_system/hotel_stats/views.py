@@ -19,12 +19,12 @@ def dashboard(request):
       {"arrival_date_month": "March", "count": 110},
     ]
 
-   # Mock data for Cancellations per Month
-   cancellations_per_month = [
-      {"arrival_date_month": "January", "count": 30},
-      {"arrival_date_month": "February", "count": 20},
-      {"arrival_date_month": "March", "count": 25},
-    ]
+   # New: Most Popular Meals
+   most_popular_meals = [
+        {"meal": "Breakfast", "count": 500},
+        {"meal": "Half-board", "count": 300},
+        {"meal": "Full-board", "count": 200},
+   ]
 
    # Mock data for Top Countries by Reservations
    top_countries = [
@@ -35,9 +35,9 @@ def dashboard(request):
 
 
    context = {
-      "stay_per_month": stay_per_month,
+      "most_popular_meals": most_popular_meals,
       "reservations_per_month": reservations_per_month,
-      "cancellations_per_month": cancellations_per_month,
+      "stay_per_month": stay_per_month,
       "top_countries": top_countries,
     }
 
