@@ -200,7 +200,10 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 document.addEventListener("DOMContentLoaded", function() {
-    // Example mock data (replace with data from GraphDB)
+    const countriesList = document.querySelector('#topCountries ul');
+    const countrySearchInput = document.querySelector('#countrySearch');
+
+    // Example mock data (replace with data from GraphDB when ready)
     const countriesData = [
         { country: 'Portugal', count: 150 },
         { country: 'United Kingdom', count: 120 },
@@ -224,20 +227,37 @@ document.addEventListener("DOMContentLoaded", function() {
         { country: 'Egypt', count: 2 },
     ];
 
-    // Populating "Top Countries"
-    const countriesList = document.querySelector('#topCountries ul'); // Correct selector for ul
-    console.log(countriesList); // Make sure it's selecting the ul
+    // Function to populate the country list
+    function populateCountries(countries) {
+        countriesList.innerHTML = '';  // Clear the list before populating
 
-    countriesData.forEach((data, index) => {
-        const li = document.createElement('li');
-        li.textContent = `${index + 1}. ${data.country}: ${data.count} Reservations`;
-        countriesList.appendChild(li);
+        countries.forEach((data, index) => {
+            const li = document.createElement('li');
+            li.textContent = `${index + 1}. ${data.country}: ${data.count} Reservations`;
+            countriesList.appendChild(li);
+        });
+
+        // Setting max-height and enabling scrolling
+        const maxHeight = 250;
+        if (countriesList.scrollHeight > maxHeight) {
+            countriesList.style.maxHeight = maxHeight + "px";
+            countriesList.style.overflowY = "auto";
+        }
+    }
+
+    // Search functionality
+    countrySearchInput.addEventListener('input', function() {
+        const searchTerm = countrySearchInput.value.toLowerCase();
+
+        // Filter countries based on the search term (case-insensitive)
+        const filteredCountries = countriesData.filter(data => 
+            data.country.toLowerCase().includes(searchTerm)
+        );
+
+        // Populate the countries list with filtered data
+        populateCountries(filteredCountries);
     });
 
-    // Setting max-height and enabling scrolling
-    var maxHeight = 250;  // Define the max height for the scrollable area
-    if (countriesList.scrollHeight > maxHeight) {
-        countriesList.style.maxHeight = maxHeight + "px";  // Apply the max height
-        countriesList.style.overflowY = "auto";  // Enable vertical scrolling
-    }
+    // Initially populate the list with all countries
+    populateCountries(countriesData);
 });
