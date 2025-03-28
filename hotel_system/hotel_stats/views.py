@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
-def home(request):
-   return HttpResponse("Welcome to the Hotel System!")
+def manage_reservations(request):
+    # You can fetch existing reservations here if needed
+    return render(request, 'manage_reservations.html')
 
 def dashboard(request):
 
