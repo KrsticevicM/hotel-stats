@@ -37,6 +37,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const reservationsCtx = document.getElementById("reservationsChart").getContext("2d");
     const averageStayCtx = document.getElementById("averageStayChart").getContext("2d");
 
+    console.log("Selected Year:", selectedYear);
+
     let reservationsChart, averageStayChart;
 
     // Fetch reservations data for a specific year
@@ -136,9 +138,9 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Fetch data for default year (2017 - default)
-    fetchReservations("2017");
-    fetchAverageStay("2017");
+    // Fetch data for default year (last one - default)
+    fetchReservations(selectedYear);
+    fetchAverageStay(selectedYear);
 
     // Event listener for year filter dropdown (Reservations per Month)
     document.getElementById("yearFilterRes").addEventListener("change", function () {

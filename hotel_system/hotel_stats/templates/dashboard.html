@@ -25,13 +25,12 @@
             <!-- Reservations by Month -->
             <div class="stats-card" id="reservationsByMonth">
                 <h3>Reservations per Month</h3>
-
                 <!-- Year Selection Dropdown -->
                 <label for="yearSelect">Select Year:</label>
                 <select id="yearFilterRes">
-                    <option value="2015">2015</option>
-                    <option value="2016">2016</option>
-                    <option value="2017" selected>2017</option>
+                    {% for year in years %}
+                        <option value="{{ year }}" {% if year == years|last %}selected{% endif %}>{{ year }}</option>
+                    {% endfor %}
                 </select>
 
                 <canvas id="reservationsChart"></canvas>
@@ -42,9 +41,9 @@
                 <h3>Average Stay per Month</h3>
                 <label for="yearSelect">Select Year:</label>
                 <select id="yearFilterAvgStay">
-                    <option value="2015">2015</option>
-                    <option value="2016">2016</option>
-                    <option value="2017" selected>2017</option>
+                    {% for year in years %}
+                        <option value="{{ year }}" {% if year == years|last %}selected{% endif %}>{{ year }}</option>
+                    {% endfor %}
                 </select>
                 <canvas id="averageStayChart"></canvas>
             </div>
@@ -63,6 +62,10 @@
         </div>
         
     </div>
+
+    <script>
+        var selectedYear = "{{ selected_year }}";
+    </script>
 
     <script type="application/json" id="meals-data">
         {{ most_popular_meals|safe }}
