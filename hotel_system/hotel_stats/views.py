@@ -99,7 +99,6 @@ def dashboard(request):
 
    years = get_possible_years()
    selected_year = years[-1]
-   print(selected_year)
 
    context = {
       "most_popular_meals": most_popular_meals,

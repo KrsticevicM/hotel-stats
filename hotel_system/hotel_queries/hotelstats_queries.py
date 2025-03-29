@@ -110,5 +110,6 @@ def get_possible_years():
     results = sparql.query().convert()
 
     years = [int(binding['year']['value']) for binding in results['results']['bindings']]
-
+    years.sort()
+    
     return years
