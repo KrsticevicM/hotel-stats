@@ -1,129 +1,153 @@
 // add reservation form
 document.getElementById("addReservationForm").addEventListener("submit", function(event) {
-   event.preventDefault();
+    event.preventDefault();
+ 
+    // Capture form values
+    const country = document.getElementById("country").value.trim();
+    const arrivalDate = document.getElementById("arrivalDate").value;
+    const hotelType = document.querySelector('input[name="hotelType"]:checked')?.value;
+    const mealType = document.querySelector('input[name="meal"]:checked')?.value;
+ 
+    // Validation check
+    if (!country || !arrivalDate || !hotelType || !mealType) {
+        alert("Please fill in all fields before submitting!");
+        return;
+    }
 
-   // Capture form values
-   const name = document.getElementById("name").value.trim();
-   const email = document.getElementById("email").value.trim();
-   const country = document.getElementById("country").value.trim();
-   const arrivalDate = document.getElementById("arrivalDate").value;
-   const hotelType = document.querySelector('input[name="hotelType"]:checked')?.value;
-   const mealType = document.querySelector('input[name="meal"]:checked')?.value;
+    const dateObj = new Date(arrivalDate);
 
-   // Validation check
-   if (!name || !email || !country || !arrivalDate || !hotelType || !mealType) {
-       alert("Please fill in all fields before submitting!");
-       return;
-   }
+    const day = dateObj.getDate();
+    const monthIndex = dateObj.getMonth();
+    const year = dateObj.getFullYear();
 
-   // Mock reservation ID generation
-   const reservationID = "RES-" + Math.floor(1000 + Math.random() * 9000);
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const monthName = monthNames[monthIndex];
 
-   // SPARQL INSERT Query - fill in KG
-   const sparqlQuery = `
-       PREFIX ex: <http://example.com/hotel#>
-       INSERT DATA {
-           ex:${reservationID} a ex:Reservation ;
-               ex:name "${name}" ;
-               ex:email "${email}" ;
-               ex:hotelType "${hotelType}" ;
-               ex:country "${country}" ;
-               ex:arrivalDate "${arrivalDate}" ;
-               ex:mealType "${mealType}" .
-       }
-   `;
+    const formData = {
+        country: country,
+        day: day,
+        month: monthName,
+        year: year,
+        hotelType: hotelType,
+        mealType: mealType
+    };
 
-   fetch("http://your-backend-endpoint", {
-       method: "POST",
-       headers: { "Content-Type": "application/sparql-update" },
-       body: sparqlQuery
-   })
-   .then(response => response.text())
-   .then(data => {
-       console.log("SPARQL Insert Response:", data);
-       alert(`Reservation ${reservationID} added successfully!`);
-       document.getElementById("addReservationForm").reset();
-   })
-   .catch(error => console.error("Error:", error));
-});
+    fetch("/manage/add/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData)
+    })
+    .then(response => response.json())  // Expecting a JSON response from backend
+    .then(data => {
+        //console.log("Backend Response:", data);
+        if (data.success) {
+            alert(`Reservation added successfully!`);
+            document.getElementById("addReservationForm").reset();
+        } else {
+            alert(`Error: ${data.message}`);
+        }
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        alert("An error occurred while submitting the reservation.");
+    });
+ 
+ });
+
 
 // Modify Reservation
 document.getElementById("modifyReservationForm").addEventListener("submit", function(event) {
-   event.preventDefault();
+    event.preventDefault();
+ 
+    const reservationID = document.getElementById("modifyReservationID").value.trim();
+    const isCanceled = document.querySelector('input[name="reservation_canceled"]:checked')?.value;
+    const arrivalDate = document.getElementById("modifyArrivalDate").value;
+    const mealType = document.querySelector('input[name="modifyMeal"]:checked')?.value;
+    
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-   const reservationID = document.getElementById("modifyReservationID").value.trim();
-   const name = document.getElementById("modifyName").value.trim();
-   const email = document.getElementById("modifyEmail").value.trim();
-   const country = document.getElementById("modifyCountry").value.trim();
-   const arrivalDate = document.getElementById("modifyArrivalDate").value;
-   const hotelType = document.querySelector('input[name="modifyHotelType"]:checked')?.value;
-   const mealType = document.querySelector('input[name="modifyMeal"]:checked')?.value;
+    const formData = {
+        id: reservationID, // Assuming reservationID is already set
+        day: "",
+        month: "", 
+        year: "",
+        meal: "",
+        is_canceled: ""
+    };
 
-   // Check if reservation exists fill in KG
-   const checkReservationQuery = `
-       PREFIX ex: <http://example.com/hotel#>
-       ASK WHERE { ex:${reservationID} a ex:Reservation . }
-   `;
+    // Check if arrivalDate is provided
+    if (arrivalDate) {
+        const dateObj = new Date(arrivalDate); // Parse the arrivalDate
 
-   fetch("http://your-backend-endpoint", {
-       method: "POST",
-       headers: { "Content-Type": "application/sparql-query" },
-       body: checkReservationQuery
-   })
-   .then(response => response.text())
-   .then(data => {
-       if (data.includes("false")) {
-           alert("Reservation ID does not exist!");
-           return;
-       }
-       
-       // SPARQL DELETE/INSERT Query
-       let updateQuery = `PREFIX ex: <http://example.com/hotel#> DELETE { ex:${reservationID} ?p ?o } INSERT { `;
-       if (name) updateQuery += `ex:${reservationID} ex:name "${name}" . `;
-       if (email) updateQuery += `ex:${reservationID} ex:email "${email}" . `;
-       if (country) updateQuery += `ex:${reservationID} ex:country "${country}" . `;
-       if (arrivalDate) updateQuery += `ex:${reservationID} ex:arrivalDate "${arrivalDate}" . `;
-       if (hotelType) updateQuery += `ex:${reservationID} ex:hotelType "${hotelType}" . `;
-       if (mealType) updateQuery += `ex:${reservationID} ex:mealType "${mealType}" . `;
-       updateQuery += `} WHERE { ex:${reservationID} ?p ?o }`;
+        const day = dateObj.getDate(); // Get the day of the month
+        const monthIndex = dateObj.getMonth(); // Get the month (0-based index)
+        const year = dateObj.getFullYear(); // Get the full year
 
-       return fetch("http://your-backend-endpoint", {
-           method: "POST",
-           headers: { "Content-Type": "application/sparql-update" },
-           body: updateQuery
-       });
-   })
-   .then(response => response.text())
-   .then(data => {
-       console.log("SPARQL Update Response:", data);
-       alert("Reservation modified successfully!");
-       document.getElementById("modifyReservationForm").reset();
-   })
-   .catch(error => console.error("Error:", error));
+        const monthName = monthNames[monthIndex]; // Convert the month index to the full month name
+
+        // Update formData with the parsed date information
+        formData.day = day;
+        formData.month = monthName;
+        formData.year = year;
+    }
+
+    if (mealType !== undefined) {
+        formData.meal = mealType;
+    }
+    if (isCanceled !== undefined) {
+        formData.is_canceled = isCanceled;
+    }
+ 
+    fetch("/manage/update/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData)
+    })
+    .then(response => response.json())  // Expecting a JSON response from backend
+    .then(data => {
+        if (data.success) {
+            alert(`Reservation updated successfully!`);
+            document.getElementById("modifyReservationForm").reset();
+        } else {
+            alert(`Error: ${data.message}`);
+            console.log(data.message)
+        }
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        alert("An error occurred while submitting the reservation.");
+    });
 });
+ 
+
 
 // Delete Reservation
 document.getElementById("deleteReservationForm").addEventListener("submit", function(event) {
-   event.preventDefault();
+    event.preventDefault();
 
-   const reservationID = document.getElementById("deleteReservationID").value.trim();
-   
-   // fill in KG
-   const deleteQuery = `
-       PREFIX ex: <http://example.com/hotel#>
-       DELETE WHERE { ex:${reservationID} ?p ?o . }
-   `;
+    const reservationID = document.getElementById("deleteReservationID").value.trim();
+    console.log(reservationID);
 
-   fetch("http://your-backend-endpoint", {
-       method: "POST",
-       headers: { "Content-Type": "application/sparql-update" },
-       body: deleteQuery
-   })
-   .then(response => response.text())
-   .then(data => {
-       console.log("SPARQL Delete Response:", data);
-       alert("Reservation deleted successfully!");
-       document.getElementById("deleteReservationForm").reset();
-   })
-   .catch(error => console.error("Error:", error));
+    const requestData = {
+        reservationID: reservationID
+    };
+
+    fetch("/manage/delete/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(requestData) // Send JSON instead of SPARQL query
+    })
+    .then(response => response.json()) // Assume the backend responds with JSON
+    .then(data => {
+        console.log("Backend Response:", data);
+        if (data.success) {
+            alert("Reservation deleted successfully!");
+            document.getElementById("deleteReservationForm").reset();
+        } else {
+            alert("Error deleting reservation.");
+        }
+    })
+    .catch(error => console.error("Error:", error));
 });

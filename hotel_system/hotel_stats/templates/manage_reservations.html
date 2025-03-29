@@ -16,15 +16,7 @@
         <div class="stats-card" id="addReservation">
             <h3>Add New Reservation</h3>
             <form id="addReservationForm">
-                <!-- Name -->
                 <div class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" id="name" name="name" placeholder="Enter Name">
-        
-                    <!-- Email -->
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" placeholder="Enter Email">
-
                     <!-- Hotel Type (radio buttons) -->
                     <label for="hotelType">Hotel Type</label>
                     <div class="radio-group">
@@ -70,27 +62,20 @@
                     <label for="modifyReservationID">Reservation ID</label>
                     <input type="text" id="modifyReservationID" name="reservation_id" required>
 
-                    <label for="modifyName">Name</label>
-                    <input type="text" id="modifyName" name="name">
-
-                    <label for="modifyEmail">Email</label>
-                    <input type="email" id="modifyEmail" name="email">
-
-                    <label for="modifyHotelType">Hotel Type</label>
-                    <div class="radio-group">
-                        <label>
-                            <input type="radio" name="modifyHotelType" value="Resort" id="modifyResortHotel"> Resort Hotel
-                        </label>
-                        <label>
-                            <input type="radio" name="modifyHotelType" value="City" id="modifyCityHotel"> City Hotel
-                        </label>
-                    </div>
-
-                    <label for="modifyCountry">Country</label>
-                    <input type="text" id="modifyCountry" name="country">
-
                     <label for="modifyArrivalDate">Arrival Date</label>
                     <input type="date" id="modifyArrivalDate" name="arrival_date">
+
+                    <div class="boolean-choice-container">
+                        <h3>Is the reservation canceled?</h3>
+                        <div class="boolean-choice">
+                            <label for="reservation-canceled-yes">
+                                <input type="radio" id="reservation-canceled_yes" name="reservation_canceled" value="1"> Yes
+                            </label>
+                            <label for="reservation-canceled-no">
+                                <input type="radio" id="reservation-canceled_no" name="reservation_canceled" value="0"> No
+                            </label>
+                        </div>
+                    </div>
 
                     <label for="modifyMeal">Meal Type</label>
                     <div class="radio-group">
