@@ -20,6 +20,25 @@ def check_id(id):
 
     return result['boolean']
 
+def get_reservation_query(id):
+    if (check_id(id) is False):
+        return
+
+    sparql = SPARQLWrapper(GRAPHDB_ENDPOINT)
+
+    query = f"""
+            DELETE WHERE {{ <http://example.org/booking/{str(id)}> ?p ?o . }}
+        """
+
+    sparql.setQuery(query)
+    sparql.setMethod(POST)
+    sparql.setReturnFormat(JSON)
+
+    response = sparql.query().convert()
+
+    result_dict = {binding["p"]["value"]: binding["o"]["value"] for binding in response["results"]["bindings"]}
+    return result_dict
+
 def delete_reservation_query(id):
     if (check_id(id) is False):
         return
