@@ -104,8 +104,8 @@ def add_reservation_query(data):
             {booking_uri} <http://schema.org/arrivalDateYear> "{data['year']}"^^xsd:gYear .
             {booking_uri} <http://schema.org/arrivalDateMonth> "{data['month']}" .
             {booking_uri} <http://example.org/arrivalDay> "{data['day']}"^^xsd:integer .
-            {booking_uri} <http://example.org/weekNights> "{data['weekNights']}^^xsd:integer" .
-            {booking_uri} <http://example.org/weekendNights> "{data['weekendNights']}^^xsd:integer" .
+            {booking_uri} <http://example.org/weekNights> "{data['weekNights']}"^^xsd:integer .
+            {booking_uri} <http://example.org/weekendNights> "{data['weekendNights']}"^^xsd:integer .
             {booking_uri} <http://schema.org/hotel> "{data['hotelType']}" .
             {booking_uri} <http://example.org/isCanceled> "0" ^^xsd:boolean .
             {booking_uri} <http://schema.org/meal> "{data['mealType']}" .
