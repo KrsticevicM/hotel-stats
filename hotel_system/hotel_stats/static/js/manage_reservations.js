@@ -1,3 +1,9 @@
+document.addEventListener("DOMContentLoaded", function () {
+    const countriesData = JSON.parse(document.getElementById('countries-codes').textContent);
+    console.log(countriesData.codes);
+});
+
+
 // add reservation form
 document.getElementById("addReservationForm").addEventListener("submit", function(event) {
     event.preventDefault();
