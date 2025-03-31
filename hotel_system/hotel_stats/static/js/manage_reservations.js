@@ -111,7 +111,7 @@ document.getElementById("getReservationForm").addEventListener("submit", functio
         body: JSON.stringify(requestData)
     })
     .then(response => {
-        console.log(response)
+        //console.log(response)
         return response.json()
     })
     .then(data => {
