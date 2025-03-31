@@ -39,18 +39,12 @@ document.getElementById("addReservationForm").addEventListener("submit", functio
         return;
     }
 
-    // Validate stays_in_week_nights and stays_in_weekend_nights
-    if (!Number.isInteger(Number(staysInWeekNights)) || !Number.isInteger(Number(staysInWeekendNights))) {
-        alert("Please enter valid integer values for the number of nights.");
-        return;
-    }
-
     const weekNights = parseInt(staysInWeekNights);
-        const weekendNights = parseInt(staysInWeekendNights);
+    const weekendNights = parseInt(staysInWeekendNights);
 
-        if (weekNights < 0 || weekendNights < 0) {
-            alert("The number of nights cannot be negative.");
-            return;
+    if (weekNights < 0 || weekendNights < 0) {
+        alert("The number of nights cannot be negative.");
+        return;
     }
 
     const dateObj = new Date(arrivalDate);
