@@ -69,6 +69,22 @@
                 </div>
             </form>
         </div>
+
+        <!-- Get Reservation Section -->
+        <div class="stats-card" id="getReservation">
+            <h3>Get Reservation</h3>
+            <form id="getReservationForm">
+                <div class="form-group">
+                    <label for="getReservationID">Reservation ID</label>
+                    <input type="text" id="getReservationID" name="reservation_id" required>
+                    
+                    <button type="submit" class="manage-link">Get Reservation</button>
+                </div>
+            </form>
+
+            <div id="reservationDetails"></div> <!-- This section will display fetched details -->
+        </div>
+
         
         <!-- Modify Reservation Section -->
         <div class="stats-card" id="modifyReservation">

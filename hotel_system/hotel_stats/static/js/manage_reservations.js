@@ -87,7 +87,55 @@ document.getElementById("addReservationForm").addEventListener("submit", functio
         alert("An error occurred while submitting the reservation.");
     });
  
- });
+});
+
+// Get Reservation
+document.getElementById("getReservationForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const reservationID = document.getElementById("getReservationID").value.trim();
+
+    if (!reservationID) {
+        alert("Please enter a Reservation ID.");
+        return;
+    }
+
+    const requestData = { reservationID: reservationID };
+
+    fetch("/manage/get/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(requestData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const reservation = data.data; // Access the 'data' from the response
+            const reservationDetailsDiv = document.getElementById("reservationDetails");
+
+            reservationDetailsDiv.innerHTML = `
+                <h4>Reservation Details</h4>
+                <p><strong>Reservation ID:</strong> ${reservation.id}</p>
+                <p><strong>Hotel Type:</strong> ${reservation.hotelType}</p>
+                <p><strong>Country:</strong> ${reservation.country}</p>
+                <p><strong>Arrival Date:</strong> ${reservation.arrivalDate}</p>
+                <p><strong>Stays in Week Nights:</strong> ${reservation.staysInWeekNights}</p>
+                <p><strong>Stays in Weekend Nights:</strong> ${reservation.staysInWeekendNights}</p>
+                <p><strong>Meal Type:</strong> ${reservation.mealType}</p>
+            `;
+        } else {
+            alert("No reservation found with the provided ID.");
+        }
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        alert("An error occurred while fetching the reservation.");
+    });
+});
+
+
 
 
 // Modify Reservation
