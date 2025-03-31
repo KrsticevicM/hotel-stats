@@ -27,7 +27,7 @@ def get_reservation_query(id):
     sparql = SPARQLWrapper(GRAPHDB_ENDPOINT)
 
     query = f"""
-            DELETE WHERE {{ <http://example.org/booking/{str(id)}> ?p ?o . }}
+            SELECT WHERE {{ <http://example.org/booking/{str(id)}> ?p ?o . }}
         """
 
     sparql.setQuery(query)
@@ -79,6 +79,7 @@ def add_reservation_query(data):
     response_id = int(response_id["results"]["bindings"][0]["bookingNumber"]["value"]) + 1
 
     id = str(response_id)
+    print(id)
     booking_uri = f"<http://example.org/booking/{id}>"
 
     sparql = SPARQLWrapper(GRAPHDB_ENDPOINT_STAT)
@@ -91,7 +92,10 @@ def add_reservation_query(data):
             {booking_uri} <http://schema.org/arrivalDateYear> "{data['year']}"^^xsd:gYear .
             {booking_uri} <http://schema.org/arrivalDateMonth> "{data['month']}" .
             {booking_uri} <http://example.org/arrivalDay> "{data['day']}"^^xsd:integer .
+            {booking_uri} <http://example.org/weekNights> "{data['weekNights']}^^xsd:integer" .
+            {booking_uri} <http://example.org/weekendNights> "{data['weekendNights']}^^xsd:integer" .
             {booking_uri} <http://schema.org/hotel> "{data['hotelType']}" .
+            {booking_uri} <http://example.org/isCanceled> "0" ^^xsd:boolean .
             {booking_uri} <http://schema.org/meal> "{data['mealType']}" .
         }}
     """
@@ -103,7 +107,7 @@ def add_reservation_query(data):
 
     return response
 
-def check_full_update(data):
+def check_update1(data):
     sparql_ask = SPARQLWrapper(GRAPHDB_ENDPOINT)
 
     uri = f"<http://example.org/booking/{data['id']}>"
@@ -141,12 +145,16 @@ def update_reservation_query(data):
     insert_statements = []
     where_statements = []
 
+    print(data["mealType"])
+
     field_mappings = {
         "year": ("<http://schema.org/arrivalDateYear>", '^^xsd:gYear'),
         "month": ("<http://schema.org/arrivalDateMonth>", ''),
         "day": ("<http://example.org/arrivalDay>", '^^xsd:integer'),
         "is_canceled": ("<http://example.org/isCanceled>", '^^xsd:boolean'),
-        "meal": ("<http://schema.org/meal>", '')
+        "mealType": ("<http://schema.org/meal>", ''),
+        "weekendNights": ("<http://example.org/weekendNights>", '^^xsd:integer'),
+        "weekNights": ("<http://example.org/weekNights>", '^^xsd:integer')
     }
 
     for key, (rdf_property, datatype) in field_mappings.items():

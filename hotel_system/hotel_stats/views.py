@@ -73,6 +73,7 @@ def update_reservation(request):
          if not data:
             return JsonResponse({"success": False, "message": "Update data is required"}, status=400)
 
+         print(data)
          response = update_reservation_query(data)
 
          if response:

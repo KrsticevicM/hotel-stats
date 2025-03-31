@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
     // Parse the JSON data passed from the Django view
     const countriesData = JSON.parse(document.getElementById('countries-codes').textContent);
-    console.log(countriesData)
+    //console.log(countriesData)
     
     // Get the select element for country
     const countrySelect = document.getElementById("country");
@@ -27,8 +27,8 @@ document.getElementById("addReservationForm").addEventListener("submit", functio
  
     // Capture form values
     const country = document.getElementById("country").value;
-    const staysInWeekNights = document.getElementById("stays_in_week_nights");
-    const staysInWeekendNights = document.getElementById("stays_in_weekend_nights");
+    const staysInWeekNights = document.getElementById("stays_in_week_nights").value;
+    const staysInWeekendNights = document.getElementById("stays_in_weekend_nights").value;
     const arrivalDate = document.getElementById("arrivalDate").value;
     const hotelType = document.querySelector('input[name="hotelType"]:checked')?.value;
     const mealType = document.querySelector('input[name="meal"]:checked')?.value;
@@ -63,8 +63,8 @@ document.getElementById("addReservationForm").addEventListener("submit", functio
         year: year,
         hotelType: hotelType,
         mealType: mealType,
-        stays_in_week_nights: weekNights,
-        stays_in_weekend_nights: weekendNights
+        weekNights: weekNights,
+        weekendNights: weekendNights
     };
 
     fetch("/manage/add/", {
@@ -97,9 +97,9 @@ document.getElementById("modifyReservationForm").addEventListener("submit", func
     const reservationID = document.getElementById("modifyReservationID").value.trim();
     const isCanceled = document.querySelector('input[name="isCanceled"]:checked')?.value;
     const arrivalDate = document.getElementById("modifyArrivalDate").value;
-    const mealType = document.querySelector('input[name="modifyMeal"]:checked')?.value;
-    const staysInWeekNights = document.getElementById("modifyStaysInWeek").value.trim();
-    const staysInWeekendNights = document.getElementById("modifyStaysInWeekend").value.trim();
+    const mealType = document.querySelector('input[name="meal"]:checked')?.value;
+    const staysInWeekNights = document.getElementById("modifyStaysInWeek").value;
+    const staysInWeekendNights = document.getElementById("modifyStaysInWeekend").value;
     
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
@@ -108,10 +108,10 @@ document.getElementById("modifyReservationForm").addEventListener("submit", func
         day: "",
         month: "", 
         year: "",
-        meal: "",
+        mealType: "",
         is_canceled: "",
-        stays_in_week_nights: "",
-        stays_in_weekend_nights: ""
+        weekNights: "",
+        weekendNights: ""
     };
 
     // Check if arrivalDate is provided
@@ -131,18 +131,18 @@ document.getElementById("modifyReservationForm").addEventListener("submit", func
     }
 
     if (mealType !== undefined) {
-        formData.meal = mealType;
+        formData.mealType = mealType;
     }
     if (isCanceled !== undefined) {
         formData.is_canceled = isCanceled;
     }
 
     if (stays_in_week_nights !== undefined){
-        formData.stays_in_week_nights = staysInWeekNights;
+        formData.weekNights = staysInWeekNights;
     }
 
     if (stays_in_weekend_nights !== undefined){
-        formData.stays_in_weekend_nights = staysInWeekendNights;
+        formData.weekendNights = staysInWeekendNights;
     }
  
     fetch("/manage/update/", {
