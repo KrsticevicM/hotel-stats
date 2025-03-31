@@ -5,10 +5,17 @@ from hotel_queries.hotelstats_queries import get_meals_data, get_countries_count
 from hotel_queries.management_queries import delete_reservation_query, add_reservation_query, update_reservation_query, get_reservation_query
 from django.contrib.admin.views.decorators import staff_member_required
 from django.views.decorators.csrf import csrf_exempt
+import pycountry
 
 @staff_member_required
 def manage_reservations(request):
-   return render(request, 'manage_reservations.html')
+   countries_codes = [country.alpha_3 for country in pycountry.countries]
+
+   context = {
+      "codes": json.dumps({"codes": countries_codes}),
+   }
+
+   return render(request, 'manage_reservations.html', context)
 
 @csrf_exempt
 @staff_member_required
@@ -133,14 +140,25 @@ def replace_meal_names(meal_data):
     
     return [{"meal": meal, "count": count} for meal, count in updated_meal_data.items()]
 
+def translate_countries(data):
+   translated_data = []
+   
+   for item in data:
+      country_code = item["country"]
+      country_name = pycountry.countries.get(alpha_3=country_code)
+      
+      item["country"] = country_name.name if country_name else country_code
+      translated_data.append(item)
+   
+   return translated_data
+
 
 def dashboard(request):
 
    most_popular_meals = replace_meal_names(get_meals_data())
-   print(most_popular_meals)
    most_popular_meals = json.dumps(most_popular_meals)
 
-   top_countries = json.dumps(get_countries_count())
+   top_countries = json.dumps(translate_countries(get_countries_count()))
 
    years = get_possible_years()
    selected_year = years[-1]
