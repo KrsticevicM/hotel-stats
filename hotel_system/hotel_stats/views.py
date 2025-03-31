@@ -5,7 +5,10 @@ from hotel_queries.hotelstats_queries import get_meals_data, get_countries_count
 from hotel_queries.management_queries import delete_reservation_query, add_reservation_query, update_reservation_query, get_reservation_query
 from django.contrib.admin.views.decorators import staff_member_required
 from django.views.decorators.csrf import csrf_exempt
+
 import pycountry
+from calendar import month_name
+
 
 @staff_member_required
 def manage_reservations(request):
@@ -124,17 +127,22 @@ def get_reservation(request):
    return JsonResponse({"success": False, "message": "Invalid request method."}, status=405)
 
 
+def sort_by_month(data):
+   month_order = {month: i for i, month in enumerate(month_name) if month}  # Dictionary of month names to numbers
+   return sorted(data, key=lambda x: month_order[x["month"]])
+
 def get_avgstay_data(request):
    year = request.GET.get('year')
    data = get_stays_per_month(year)
 
-   return JsonResponse(data, safe=False)
+   return JsonResponse(sort_by_month(data), safe=False)
 
 def get_reservation_data(request):
    year = request.GET.get('year')
    data = get_reservations_per_month(year)
 
-   return JsonResponse(data, safe=False)
+   return JsonResponse(sort_by_month(data), safe=False)
+
 
 def replace_meal_names(meal_data):
     meal_mapping = {
