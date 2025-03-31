@@ -86,36 +86,37 @@ def update_reservation(request):
 
    return JsonResponse({"success": False, "message": "Invalid request method."}, status=405)
 
+@csrf_exempt
+@staff_member_required
 def get_reservation(request):
    if request.method == "POST":
       try:
-         # Retrieve the booking ID from the POST data
-         booking_id = request.POST.get('id')
+         booking_id = int(json.loads(request.body)["reservationID"])
 
-         # Check if booking ID is provided
          if not booking_id:
                return JsonResponse({"success": False, "message": "Wrong booking id."}, status=400)
 
-         # Query the reservation using the custom function
          result = get_reservation_query(booking_id)
 
          if result:
-               # Assuming the result contains reservation data (like the ones in the JSON response)
-               return JsonResponse({
-                  "success": True,
-                  "message": "Reservation retrieved",
-                  "data": {
-                     'id': result.id,
-                     'hotelType': result.hotel_type,
-                     'country': result.country,
-                     'arrivalDate': result.arrival_date,
-                     'staysInWeekNights': result.stays_in_week_nights,
-                     'staysInWeekendNights': result.stays_in_weekend_nights,
-                     'mealType': result.meal_type
-                  }
-               })
+            print("true")
+            print(result)
+            return JsonResponse({
+               "success": True,
+               "message": "Reservation retrieved",
+               "data": {
+                  'id': result["id"],
+                  'hotelType': result["hotelType"],
+                  'country': result["country"],
+                  'arrivalDate': result["arrivalDate"],
+                  'staysInWeekNights': result["staysInWeekNights"],
+                  'staysInWeekendNights': result["staysInWeekendNights"],
+                  'mealType': result["mealType"],
+                  'isCanceled': result["isCanceled"]
+               }
+            })
          else:
-               return JsonResponse({"success": False, "message": "Error getting reservation."}, status=404)
+            return JsonResponse({"success": False, "message": "Error getting reservation."}, status=404)
       
       except Exception as e:
          return JsonResponse({"success": False, "message": str(e)}, status=500)

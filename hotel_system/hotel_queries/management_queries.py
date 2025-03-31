@@ -16,19 +16,18 @@ def check_id(id):
     sparql.setReturnFormat(JSON)
     result = sparql.query().convert()
 
-    print(result["boolean"])
-
     return result['boolean']
 
 def get_reservation_query(id):
+
     if (check_id(id) is False):
         return
 
     sparql = SPARQLWrapper(GRAPHDB_ENDPOINT)
 
     query = f"""
-            SELECT WHERE {{ <http://example.org/booking/{str(id)}> ?p ?o . }}
-        """
+        SELECT ?p ?o WHERE {{ <http://example.org/booking/{str(id)}> ?p ?o . }}
+    """
 
     sparql.setQuery(query)
     sparql.setMethod(POST)
@@ -37,7 +36,20 @@ def get_reservation_query(id):
     response = sparql.query().convert()
 
     result_dict = {binding["p"]["value"]: binding["o"]["value"] for binding in response["results"]["bindings"]}
-    return result_dict
+
+    filtered_results = {
+        "id": id,  
+        "hotelType": result_dict.get("http://schema.org/hotel"),
+        "country": result_dict.get("http://schema.org/addressCountry"),
+        "arrivalDate": f"{result_dict.get('http://schema.org/arrivalDateYear')}-{result_dict.get('http://schema.org/arrivalDateMonth')}-{result_dict.get('http://example.org/arrivalDay')}",
+        "staysInWeekNights": int(result_dict.get("http://example.org/weekNights", 0)),
+        "staysInWeekendNights": int(result_dict.get("http://example.org/weekendNights", 0)),
+        "mealType": result_dict.get("http://schema.org/meal"),
+        "isCanceled": result_dict.get("http://example.org/isCanceled")
+    }
+    print(filtered_results)
+
+    return filtered_results
 
 def delete_reservation_query(id):
     if (check_id(id) is False):

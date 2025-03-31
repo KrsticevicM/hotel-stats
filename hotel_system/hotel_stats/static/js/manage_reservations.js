@@ -109,10 +109,14 @@ document.getElementById("getReservationForm").addEventListener("submit", functio
         },
         body: JSON.stringify(requestData)
     })
-    .then(response => response.json())
+    .then(response => {
+        console.log(response)
+        return response.json()
+    })
     .then(data => {
+        console.log(data)
         if (data.success) {
-            const reservation = data.data; // Access the 'data' from the response
+            const reservation = data.data;
             const reservationDetailsDiv = document.getElementById("reservationDetails");
 
             reservationDetailsDiv.innerHTML = `
@@ -124,6 +128,7 @@ document.getElementById("getReservationForm").addEventListener("submit", functio
                 <p><strong>Stays in Week Nights:</strong> ${reservation.staysInWeekNights}</p>
                 <p><strong>Stays in Weekend Nights:</strong> ${reservation.staysInWeekendNights}</p>
                 <p><strong>Meal Type:</strong> ${reservation.mealType}</p>
+                <p><strong>Cancelation status:</strong> ${reservation.isCanceled}</p>
             `;
         } else {
             alert("No reservation found with the provided ID.");
