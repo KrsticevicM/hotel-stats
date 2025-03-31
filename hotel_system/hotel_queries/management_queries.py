@@ -105,7 +105,7 @@ def add_reservation_query(data):
 
     response = sparql.query()
 
-    return response
+    return response, id
 
 def check_update1(data):
     sparql_ask = SPARQLWrapper(GRAPHDB_ENDPOINT)

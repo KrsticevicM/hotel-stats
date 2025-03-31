@@ -76,7 +76,8 @@ document.getElementById("addReservationForm").addEventListener("submit", functio
     .then(data => {
         //console.log("Backend Response:", data);
         if (data.success) {
-            alert(`Reservation added successfully!`);
+            alert(`Reservation added successfully! Reservation ID: ${data.id}`);
+            //console.log(data.id)
             document.getElementById("addReservationForm").reset();
         } else {
             alert(`Error: ${data.message}`);

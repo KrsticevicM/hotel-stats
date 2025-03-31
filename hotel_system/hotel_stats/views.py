@@ -50,11 +50,11 @@ def add_reservation(request):
          if not data:
             return JsonResponse({"success": False, "message": "Reservation data is required"}, status=400)
 
-         response = add_reservation_query(data)
+         response, id = add_reservation_query(data)
          print(response)
 
          if response:
-               return JsonResponse({"success": True, "message": "Reservation added successfully!"})
+               return JsonResponse({"success": True, "message": "Reservation added successfully!",  "id": id})
          else:
                return JsonResponse({"success": False, "message": "Error adding reservation."})
       
