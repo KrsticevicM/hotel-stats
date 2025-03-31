@@ -6,10 +6,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const labels = mealsData.map(data => data.meal);
     const values = mealsData.map(data => data.count);
 
-    const backgroundColors = mealsData.map(() => 
-        `#${Math.floor(Math.random() * 16777215).toString(16)}`
-    );
-
     const mealsCtx = document.getElementById("mealsChart").getContext("2d");
 
     new Chart(mealsCtx, {
@@ -18,12 +14,13 @@ document.addEventListener("DOMContentLoaded", function () {
             labels: labels,
             datasets: [{
                 data: values,
-                backgroundColor: backgroundColors,
+                backgroundColor: ["#FF6B6B", "#4D96FF",  "#FFD93D", "#6BCB77", "#FF9F45"],
                 hoverOffset: 4
             }]
         },
         options: {
             responsive: true,
+            aspectRatio: 2,
             plugins: {
                 legend: { position: "right" }
             }

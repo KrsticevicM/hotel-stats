@@ -114,7 +114,7 @@ def update_reservation_query(data):
     sparql = SPARQLWrapper(GRAPHDB_ENDPOINT_STAT)
     sparql.setMethod(POST)
 
-    uri = f"<http://example.org/booking/{data["id"]}>"
+    uri = f"<http://example.org/booking/{data['id']}>"
 
     PREFIXES = """PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>"""
 
