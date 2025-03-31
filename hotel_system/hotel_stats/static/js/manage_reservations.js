@@ -3,15 +3,31 @@ document.getElementById("addReservationForm").addEventListener("submit", functio
     event.preventDefault();
  
     // Capture form values
-    const country = document.getElementById("country").value.trim();
+    const country = document.getElementById("country").value;
+    const staysInWeekNightsInput = document.getElementById("stays_in_week_nights");
+    const staysInWeekendNightsInput = document.getElementById("stays_in_weekend_nights");
     const arrivalDate = document.getElementById("arrivalDate").value;
     const hotelType = document.querySelector('input[name="hotelType"]:checked')?.value;
     const mealType = document.querySelector('input[name="meal"]:checked')?.value;
  
     // Validation check
-    if (!country || !arrivalDate || !hotelType || !mealType) {
+    if (!country || !arrivalDate || !hotelType || !mealType || !staysInWeekNights || !staysInWeekendNights) {
         alert("Please fill in all fields before submitting!");
         return;
+    }
+
+    // Validate stays_in_week_nights and stays_in_weekend_nights
+    if (!Number.isInteger(Number(staysInWeekNights)) || !Number.isInteger(Number(staysInWeekendNights))) {
+        alert("Please enter valid integer values for the number of nights.");
+        return;
+    }
+
+    const weekNights = parseInt(staysInWeekNights);
+        const weekendNights = parseInt(staysInWeekendNights);
+
+        if (weekNights < 0 || weekendNights < 0) {
+            alert("The number of nights cannot be negative.");
+            return;
     }
 
     const dateObj = new Date(arrivalDate);
@@ -29,7 +45,9 @@ document.getElementById("addReservationForm").addEventListener("submit", functio
         month: monthName,
         year: year,
         hotelType: hotelType,
-        mealType: mealType
+        mealType: mealType,
+        stays_in_week_nights: weekNights,
+        stays_in_weekend_nights: weekendNights
     };
 
     fetch("/manage/add/", {
@@ -60,9 +78,11 @@ document.getElementById("modifyReservationForm").addEventListener("submit", func
     event.preventDefault();
  
     const reservationID = document.getElementById("modifyReservationID").value.trim();
-    const isCanceled = document.querySelector('input[name="reservation_canceled"]:checked')?.value;
+    const isCanceled = document.querySelector('input[name="isCanceled"]:checked')?.value;
     const arrivalDate = document.getElementById("modifyArrivalDate").value;
     const mealType = document.querySelector('input[name="modifyMeal"]:checked')?.value;
+    const staysInWeekNights = document.getElementById("modifyStaysInWeek").value.trim();
+    const staysInWeekendNights = document.getElementById("modifyStaysInWeekend").value.trim();
     
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
@@ -72,7 +92,9 @@ document.getElementById("modifyReservationForm").addEventListener("submit", func
         month: "", 
         year: "",
         meal: "",
-        is_canceled: ""
+        is_canceled: "",
+        stays_in_week_nights: "",
+        stays_in_weekend_nights: ""
     };
 
     // Check if arrivalDate is provided
@@ -96,6 +118,14 @@ document.getElementById("modifyReservationForm").addEventListener("submit", func
     }
     if (isCanceled !== undefined) {
         formData.is_canceled = isCanceled;
+    }
+
+    if (stays_in_week_nights !== undefined){
+        formData.stays_in_week_nights = staysInWeekNights;
+    }
+
+    if (stays_in_weekend_nights !== undefined){
+        formData.stays_in_weekend_nights = staysInWeekendNights;
     }
  
     fetch("/manage/update/", {
