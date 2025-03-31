@@ -1,6 +1,23 @@
 document.addEventListener("DOMContentLoaded", function () {
+    // Parse the JSON data passed from the Django view
     const countriesData = JSON.parse(document.getElementById('countries-codes').textContent);
-    console.log(countriesData.codes);
+    console.log(countriesData)
+    
+    // Get the select element for country
+    const countrySelect = document.getElementById("country");
+
+    // Check if countriesData is available and contains 'codes'
+    if (countriesData && countriesData.codes) {
+        // Loop through the countries and populate the dropdown
+        countriesData.codes.forEach(country => {
+            const option = document.createElement('option');
+            option.value = country;  
+            option.textContent = country;  
+            countrySelect.appendChild(option);
+        });
+    } else {
+        console.error("Countries data is missing or doesn't have 'codes' property.");
+    }
 });
 
 
@@ -10,8 +27,8 @@ document.getElementById("addReservationForm").addEventListener("submit", functio
  
     // Capture form values
     const country = document.getElementById("country").value;
-    const staysInWeekNightsInput = document.getElementById("stays_in_week_nights");
-    const staysInWeekendNightsInput = document.getElementById("stays_in_weekend_nights");
+    const staysInWeekNights = document.getElementById("stays_in_week_nights");
+    const staysInWeekendNights = document.getElementById("stays_in_weekend_nights");
     const arrivalDate = document.getElementById("arrivalDate").value;
     const hotelType = document.querySelector('input[name="hotelType"]:checked')?.value;
     const mealType = document.querySelector('input[name="meal"]:checked')?.value;
