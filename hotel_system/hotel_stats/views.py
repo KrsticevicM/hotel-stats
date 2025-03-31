@@ -2,16 +2,16 @@ from django.shortcuts import render
 import json
 from django.http import JsonResponse
 from hotel_queries.hotelstats_queries import get_meals_data, get_countries_count, get_stays_per_month, get_reservations_per_month, get_possible_years
-from hotel_queries.management_queries import delete_reservation_query, add_reservation_query, update_reservation_query
+from hotel_queries.management_queries import delete_reservation_query, add_reservation_query, update_reservation_query, get_reservation_query
 from django.contrib.admin.views.decorators import staff_member_required
 from django.views.decorators.csrf import csrf_exempt
 
-#@staff_member_required
+@staff_member_required
 def manage_reservations(request):
    return render(request, 'manage_reservations.html')
 
 @csrf_exempt
-#@staff_member_required
+@staff_member_required
 def delete_reservation(request):
    if request.method == "POST":
       try:
@@ -34,7 +34,7 @@ def delete_reservation(request):
    return JsonResponse({"success": False, "message": "Invalid request method."}, status=405)
 
 @csrf_exempt
-#@staff_member_required
+@staff_member_required
 def add_reservation(request):
    if request.method == "POST":
       try:
@@ -57,7 +57,7 @@ def add_reservation(request):
    return JsonResponse({"success": False, "message": "Invalid request method."}, status=405)
 
 @csrf_exempt
-#@staff_member_required
+@staff_member_required
 def update_reservation(request):
    if request.method == "POST":
       try:
@@ -78,6 +78,26 @@ def update_reservation(request):
 
    return JsonResponse({"success": False, "message": "Invalid request method."}, status=405)
 
+def get_reservation(request):
+   if request.method == "POST":
+      try:
+         booking_id = request.POST.get('id')
+
+         if not booking_id:
+            return JsonResponse({"success": False, "message": "Wrong booking id."}, status=400)
+
+         result = get_reservation_query(booking_id)
+
+         if result:
+               return JsonResponse({"success": True, "message": "Reservation retrieved", "data": result})
+
+         else:
+               return JsonResponse({"success": False, "message": "Error getting reservation."})
+      
+      except Exception as e:
+         return JsonResponse({"success": False, "message": str(e)}, status=500)
+
+   return JsonResponse({"success": False, "message": "Invalid request method."}, status=405)
 
 
 def get_avgstay_data(request):
@@ -92,9 +112,34 @@ def get_reservation_data(request):
 
    return JsonResponse(data, safe=False)
 
+def replace_meal_names(meal_data):
+    meal_mapping = {
+        "BB": "Bed and Breakfast",
+        "HB": "Half Board",
+        "SC": "Self-Catering",
+        "FB": "Full Board",
+        "Undefined": "Other",
+        "Other": "Other"
+    }
+
+    updated_meal_data = {}
+    
+    for item in meal_data:
+        mapped_meal = meal_mapping.get(item["meal"], item["meal"])
+        if mapped_meal in updated_meal_data:
+            updated_meal_data[mapped_meal] += item["count"]
+        else:
+            updated_meal_data[mapped_meal] = item["count"]
+    
+    return [{"meal": meal, "count": count} for meal, count in updated_meal_data.items()]
+
+
 def dashboard(request):
 
-   most_popular_meals = json.dumps(get_meals_data())
+   most_popular_meals = replace_meal_names(get_meals_data())
+   print(most_popular_meals)
+   most_popular_meals = json.dumps(most_popular_meals)
+
    top_countries = json.dumps(get_countries_count())
 
    years = get_possible_years()
