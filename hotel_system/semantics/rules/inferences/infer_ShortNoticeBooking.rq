@@ -1,0 +1,11 @@
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX ex: <http://example.org/>
+PREFIX : <http://example.org/hotel-ontology/1.0.0.3#>
+
+INSERT {
+  ?booking a :ShortNoticeBooking .
+}
+WHERE {
+  ?booking ex:leadTime ?lt .
+  FILTER(xsd:integer(?lt) < 3)
+}

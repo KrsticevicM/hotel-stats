@@ -1,0 +1,11 @@
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX schema: <http://schema.org/>
+PREFIX : <http://example.org/hotel-ontology/1.0.0.3#>
+
+INSERT {
+  ?booking a :SingleAdult .
+}
+WHERE {
+  ?booking schema:numberOfAdults ?n .
+  FILTER(xsd:integer(?n) = 1)
+}
