@@ -205,11 +205,11 @@ def dashboard(request):
 
 
 def get_additional_country_data(request):
-   country_code = request.GET.get('country_code')
-   #print(country_code)
-   #print(translate_country(country_code))
+   #country_code = request.GET.get('country_code')
+   #country_name = translate_country(country_code)
+
+   country_name = request.GET.get('country_name')
    
-   country_name = translate_country(country_code)
    stats = get_country_statistics(country_name)
    #print(stats)
    
