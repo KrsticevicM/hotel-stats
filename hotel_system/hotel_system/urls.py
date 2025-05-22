@@ -28,4 +28,5 @@ urlpatterns = [
     path('manage/add/', views.add_reservation, name='add_reservation'),
     path('manage/update/', views.update_reservation, name='update_reservation'),
     path('manage/get/', views.get_reservation, name='get_reservation'),
+    path('additional/get/', views.get_additional_country_data, name='get_country_data'),
 ]

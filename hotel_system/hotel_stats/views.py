@@ -1,8 +1,11 @@
 from django.shortcuts import render
 import json
 from django.http import JsonResponse
+
 from hotel_queries.hotelstats_queries import get_meals_data, get_countries_count, get_stays_per_month, get_reservations_per_month, get_possible_years
 from hotel_queries.management_queries import delete_reservation_query, add_reservation_query, update_reservation_query, get_reservation_query
+from hotel_queries.wikidata_dbpedia_exp import get_country_statistics
+
 from django.contrib.admin.views.decorators import staff_member_required
 from django.views.decorators.csrf import csrf_exempt
 
@@ -177,6 +180,9 @@ def translate_countries(data):
    
    return translated_data
 
+def translate_country(country_code):      
+   return pycountry.countries.get(alpha_3=country_code).name
+
 
 def dashboard(request):
 
@@ -196,3 +202,15 @@ def dashboard(request):
    }
 
    return render(request, 'dashboard.html', context)
+
+
+def get_additional_country_data(request):
+   country_code = request.GET.get('country_code')
+   #print(country_code)
+   #print(translate_country(country_code))
+   
+   country_name = translate_country(country_code)
+   stats = get_country_statistics(country_name)
+   #print(stats)
+   
+   return JsonResponse(stats)
