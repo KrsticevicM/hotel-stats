@@ -1,0 +1,10 @@
+PREFIX ex: <http://example.org/>
+PREFIX : <http://example.org/hotel-ontology/1.0.0.3#>
+
+INSERT {
+  ?booking a :ReservationWithSpecialMeal .
+}
+WHERE {
+  ?booking ex:meal ?meal .
+  FILTER(?meal != "BB" && ?meal != "HB")
+}

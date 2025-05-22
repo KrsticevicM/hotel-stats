@@ -1,0 +1,12 @@
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX ex: <http://example.org/>
+PREFIX : <http://example.org/hotel-ontology/1.0.0.3#>
+
+INSERT {
+  ?booking a :FamilyRoomHeavyUse .
+}
+WHERE {
+  ?booking ex:children ?c ;
+           ex:babies ?b .
+  FILTER(xsd:integer(?c) > 2 && xsd:integer(?b) > 1)
+}

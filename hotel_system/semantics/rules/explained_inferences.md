@@ -15,6 +15,7 @@ This document describes the semantic inference rules applied to the RDF data usi
 | `:SingleAdult`          | `infer_SingleAdult.rq`           | numberOfAdults = 1                                     | `?b a :SingleAdult`            |
 | `:FamilyWithBabies`     | `infer_FamilywithBabies.rq`      | babies ≥ 1                                             | `?b a :FamilyWithBabies`       |
 | `:RepeatCustomer`       | `infer_RepeatCustomer.rq`        | isRepeatedGuest = true or "1"                          | `?b a :RepeatCustomer`         |
+| `:GroupReservation` | Booking with 5–10 people (adults + children + babies) | `SELECT ?b WHERE { ?b a :GroupReservation }` |
 
 ---
 
