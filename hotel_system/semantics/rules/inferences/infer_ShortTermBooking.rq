@@ -3,9 +3,9 @@ PREFIX ex: <http://example.org/>
 PREFIX : <http://example.org/hotel-ontology/1.0.0.3#>
 
 INSERT {
-  ?booking a :RepeatCustomer .
+  ?booking a :ShortTermBooking .
 }
 WHERE {
-  ?booking ex:isRepeatedGuest ?rep .
-  FILTER(xsd:boolean(?rep) = true || ?rep = "1")
+  ?booking ex:leadTime ?lt .
+  FILTER(xsd:integer(?lt) >= 3 && xsd:integer(?lt) <= 7)
 }
