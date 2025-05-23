@@ -157,23 +157,79 @@ document.addEventListener("DOMContentLoaded", function() {
     const countrySearchInput = document.querySelector('#countrySearch');
 
     const countriesData = JSON.parse(document.getElementById("countries-data").textContent);
-
+    
     // Function to populate the country list
     function populateCountries(countries) {
-        countriesList.innerHTML = '';  // Clear the list before populating
+        countriesList.innerHTML = '';  // Clear the list
 
         countries.forEach((data, index) => {
             const li = document.createElement('li');
+            li.title = 'Click to get data about this country'; 
             li.textContent = `${index + 1}. ${data.country}: ${data.count} Reservations`;
+
+            // Add click listener to fetch and display statistics
+            li.addEventListener('click', () => {
+                console.log(`Clicked on ${data.country}`); 
+                fetchCountryStats(data.country);
+            });
+
             countriesList.appendChild(li);
         });
 
-        // Setting max-height and enabling scrolling
+        // Scroll setup
         const maxHeight = 250;
         if (countriesList.scrollHeight > maxHeight) {
             countriesList.style.maxHeight = maxHeight + "px";
             countriesList.style.overflowY = "auto";
         }
+    }
+
+    function formatPopulation(pop) {
+        if (!pop) return 'N/A';
+
+        // If population is a string, convert to number
+        const num = typeof pop === 'string' ? Number(pop.replace(/[^\d]/g, '')) : pop;
+
+        if (isNaN(num)) return pop; // fallback: return original if not a number
+
+        // Format with commas 
+        return num.toLocaleString('en-US');
+    }
+    function truncateText(text, maxLength = 200) {
+        if (!text) return 'N/A';
+        if (text.length <= maxLength) return text;
+        return text.slice(0, maxLength) + '...';
+    }
+
+    function fetchCountryStats(countryName) {
+        //console.log("Fetching stats for:", countryName); 
+        fetch(`/additional/get/?country_name=${encodeURIComponent(countryName)}`)
+            .then(response => response.json())
+            .then(data => {
+                const statsContainer = document.getElementById("countryStats");
+                const shortAbstract = truncateText(data.Abstract);
+                statsContainer.innerHTML = `
+                    <h4>${countryName}</h4>
+                    <p><strong>Capital:</strong> ${data.Capital || 'N/A'}</p>
+                    <p><strong>Population:</strong> ${formatPopulation(data.Population)}</p>
+                    <p><strong>Language:</strong> ${data.Language || 'N/A'}</p>
+                    <p><strong>Currency:</strong> ${data.Currency || 'N/A'}</p>
+                    <p><strong>Abstract:</strong> <span id="abstract">${shortAbstract}</span> ${data.Abstract.length > 150 ? '<a href="#" id="readMore">Read more</a>' : ''}</p>
+                `;
+
+                const readMoreLink = document.getElementById('readMore');
+            if (readMoreLink) {
+                readMoreLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.getElementById('abstract').textContent = data.Abstract;
+                    this.style.display = 'none';
+                });
+            }
+            })
+            .catch(error => {
+                alert("Failed to fetch country data.");
+                console.error(error);
+            });
     }
 
     // Search functionality
@@ -191,4 +247,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Initially populate the list with all countries
     populateCountries(countriesData);
+
 });
+
