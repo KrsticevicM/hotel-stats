@@ -466,6 +466,42 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
+document.addEventListener("DOMContentLoaded", function () {
+  const ctx = document.getElementById("bookingTimingChart").getContext("2d");
+
+  fetch("/api/booking-timing/") // match your Django route
+    .then((res) => res.json())
+    .then((data) => {
+      const labels = data.map(item => item.bookingType.replace("Booking", "").replace(/([A-Z])/g, ' $1').trim());
+      const counts = data.map(item => item.count);
+
+      new Chart(ctx, {
+        type: "doughnut",
+        data: {
+          labels: labels,
+          datasets: [{
+            data: counts,
+            backgroundColor: [
+              "rgba(231, 76, 60, 0.7)",   // Red - Last minute
+              "rgba(241, 196, 15, 0.7)",  // Yellow - Short term
+              "rgba(46, 204, 113, 0.7)"   // Green - Planned
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: 'bottom' },
+            tooltip: { enabled: true }
+          }
+        }
+      });
+    })
+    .catch((err) => console.error("Failed to fetch booking timing stats:", err));
+});
+
+
 
 
 

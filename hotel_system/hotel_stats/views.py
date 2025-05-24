@@ -360,3 +360,12 @@ def vip_bookings_data(request):
         }
     }
     return JsonResponse(data)
+
+def get_booking_timing_stats(request):
+    # Mock response to simulate GraphDB query result
+    data = [
+        {"bookingType": "LastMinuteBooking", "count": 43},
+        {"bookingType": "ShortTermBooking", "count": 75},
+        {"bookingType": "PlannedBooking", "count": 32},
+    ]
+    return JsonResponse(data, safe=False)

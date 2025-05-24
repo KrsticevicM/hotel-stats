@@ -33,4 +33,5 @@ urlpatterns = [
     path('api/high-risk-bookings/', views.high_cancellation_risk, name='high_risk_bookings'),
     path('api/loyal-guests-this-month/', views.loyal_guests_this_month, name='loyal-guests-this-month'),
     path('api/vip-bookings/', views.vip_bookings_data, name='vip-bookings-data'),
+    path("api/booking-timing/", views.get_booking_timing_stats, name="booking_timing_stats")
 ]
