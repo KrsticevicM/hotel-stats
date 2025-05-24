@@ -228,22 +228,30 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function fetchCountryStats(countryName) {
-        //console.log("Fetching stats for:", countryName); 
-        fetch(`/additional/get/?country_name=${encodeURIComponent(countryName)}`)
-            .then(response => response.json())
-            .then(data => {
-                const statsContainer = document.getElementById("countryStats");
-                const shortAbstract = truncateText(data.Abstract);
-                statsContainer.innerHTML = `
-                    <h4>${countryName}</h4>
-                    <p><strong>Capital:</strong> ${data.Capital || 'N/A'}</p>
-                    <p><strong>Population:</strong> ${formatPopulation(data.Population)}</p>
-                    <p><strong>Language:</strong> ${data.Language || 'N/A'}</p>
-                    <p><strong>Currency:</strong> ${data.Currency || 'N/A'}</p>
-                    <p><strong>Abstract:</strong> <span id="abstract">${shortAbstract}</span> ${data.Abstract.length > 150 ? '<a href="#" id="readMore">Read more</a>' : ''}</p>
-                `;
+    fetch(`/additional/get/?country_name=${encodeURIComponent(countryName)}`)
+        .then(response => response.json())
+        .then(data => {
+            const statsContainer = document.getElementById("countryStats");
 
-                const readMoreLink = document.getElementById('readMore');
+            // Keep the existing h3, update or add details below it
+            let detailsHtml = `
+                <p><strong>Country:</strong> ${countryName}</p>
+                <p><strong>Capital:</strong> ${data.Capital || 'N/A'}</p>
+                <p><strong>Population:</strong> ${formatPopulation(data.Population)}</p>
+                <p><strong>Language:</strong> ${data.Language || 'N/A'}</p>
+                <p><strong>Currency:</strong> ${data.Currency || 'N/A'}</p>
+                <p><strong>Abstract:</strong> <span id="abstract">${truncateText(data.Abstract)}</span> ${data.Abstract.length > 150 ? '<a href="#" id="readMore">Read more</a>' : ''}</p>
+            `;
+
+            // Find the existing <h3> inside the container
+            const h3 = statsContainer.querySelector('h3');
+
+            // Replace container's innerHTML but keep h3 at top
+            statsContainer.innerHTML = '';
+            if (h3) statsContainer.appendChild(h3);
+            statsContainer.insertAdjacentHTML('beforeend', detailsHtml);
+
+            const readMoreLink = document.getElementById('readMore');
             if (readMoreLink) {
                 readMoreLink.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -251,12 +259,13 @@ document.addEventListener("DOMContentLoaded", function() {
                     this.style.display = 'none';
                 });
             }
-            })
-            .catch(error => {
-                alert("Failed to fetch country data.");
-                console.error(error);
-            });
+        })
+        .catch(error => {
+            alert("Failed to fetch country data.");
+            console.error(error);
+        });
     }
+
 
     // Search functionality
     countrySearchInput.addEventListener('input', function() {
