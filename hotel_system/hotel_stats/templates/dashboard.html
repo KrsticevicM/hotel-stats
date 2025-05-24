@@ -56,6 +56,19 @@
                 </ul>
             </div>
 
+            <!-- Family Bookings by Month -->
+            <div class="stats-card" id="familyBookings">
+                <h3>Family Bookings per Month</h3>
+                <label for="yearSelect">Select Year:</label>
+                <select id="yearFilterFamily">
+                    {% for year in years %}
+                        <option value="{{ year }}" {% if year == years|last %}selected{% endif %}>{{ year }}</option>
+                    {% endfor %}
+                </select>
+                <canvas id="familyBookingsChart"></canvas>
+            </div>
+
+
             <div class="stats-card" id="countryStats">
                 <h3>Country Details</h3>
                 <p>Select a country to view additional statistics.</p>

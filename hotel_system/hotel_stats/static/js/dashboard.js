@@ -250,3 +250,64 @@ document.addEventListener("DOMContentLoaded", function() {
 
 });
 
+document.addEventListener("DOMContentLoaded", function () {
+    const familyBookingsCtx = document.getElementById("familyBookingsChart").getContext("2d");
+    let familyBookingsChart;
+
+    // Fetch family booking data
+    function fetchFamilyBookings(year) {
+        fetch(`/api/family-bookings/?year=${year}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("API not available, using mock data...");
+                }
+                return response.json();
+            })
+            .then(data => updateFamilyBookingsChart(data))
+            .catch(error => {
+                console.warn(error.message);
+                // You can add mock data fallback here
+            });
+    }
+
+    // Update the Family Bookings chart
+    function updateFamilyBookingsChart(data) {
+        const labels = data.map(entry => entry.month);
+        const counts = data.map(entry => entry.count);
+
+        if (familyBookingsChart) {
+            familyBookingsChart.data.labels = labels;
+            familyBookingsChart.data.datasets[0].data = counts;
+            familyBookingsChart.update();
+        } else {
+            familyBookingsChart = new Chart(familyBookingsCtx, {
+                type: "bar",
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: "Family Bookings",
+                        data: counts,
+                        backgroundColor: "rgba(255, 99, 132, 0.6)",
+                        borderColor: "rgba(255, 99, 132, 1)",
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: { y: { beginAtZero: true } }
+                }
+            });
+        }
+    }
+
+    // Initial fetch for the default year
+    fetchFamilyBookings(selectedYear);
+
+    // Event listener for year filter dropdown (Family Bookings)
+    document.getElementById("yearFilterFamily").addEventListener("change", function () {
+        const selectedYear = this.value;
+        fetchFamilyBookings(selectedYear);
+    });
+});
+
+

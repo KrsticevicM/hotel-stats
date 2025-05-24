@@ -214,3 +214,44 @@ def get_additional_country_data(request):
    #print(stats)
    
    return JsonResponse(stats)
+
+def family_bookings_mock(request):
+    # Get the year from the query parameter (default to 2022 if not provided)
+    year = request.GET.get("year", "2022")
+
+    # Example mock data (replace with dynamic logic or SPARQL later)
+    mock_data = {
+        "2022": [
+            {"month": "January", "count": 12},
+            {"month": "February", "count": 9},
+            {"month": "March", "count": 15},
+            {"month": "April", "count": 17},
+            {"month": "May", "count": 20},
+            {"month": "June", "count": 23},
+            {"month": "July", "count": 30},
+            {"month": "August", "count": 28},
+            {"month": "September", "count": 19},
+            {"month": "October", "count": 14},
+            {"month": "November", "count": 10},
+            {"month": "December", "count": 8},
+        ],
+        "2023": [
+            {"month": "January", "count": 14},
+            {"month": "February", "count": 11},
+            {"month": "March", "count": 18},
+            {"month": "April", "count": 20},
+            {"month": "May", "count": 25},
+            {"month": "June", "count": 27},
+            {"month": "July", "count": 35},
+            {"month": "August", "count": 32},
+            {"month": "September", "count": 22},
+            {"month": "October", "count": 16},
+            {"month": "November", "count": 13},
+            {"month": "December", "count": 9},
+        ]
+    }
+
+    # Get the mock data for the selected year
+    data = mock_data.get(year, mock_data["2022"])
+
+    return JsonResponse(data, safe=False)
