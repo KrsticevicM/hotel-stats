@@ -87,8 +87,21 @@
                 <ul id="loyal-guest-list" class="scrollable-list"></ul>
             </div>
 
+            <div class="stats-card" id="vipGuestsCard">
+                <h3>Top VIPs with high ADR (Average Daily Rate)</h3>
+                <label for="vipYearSelect">Select Year:</label>
+                <select id="vipYearSelect">
+                    {% for year in years %}
+                    <option value="{{ year }}" {% if year == years|last %}selected{% endif %}>{{ year }}</option>
+                    {% endfor %}
+                </select>
+
+                <canvas id="vipRevenueChart"></canvas>
+                <div id="vipStatsSummary"></div>
+            </div>
+
         </div>
-        
+
         <div class="manage-link-container">
             <a href="/manage-reservations" class="manage-link">Manage Reservations</a>
         </div>

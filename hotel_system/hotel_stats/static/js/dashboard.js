@@ -370,6 +370,103 @@ function fetchLoyalGuests() {
     });
 }
 
+document.addEventListener("DOMContentLoaded", function () {
+  const vipYearSelect = document.getElementById("vipYearSelect");
+  const vipStatsSummary = document.getElementById("vipStatsSummary"); // optional, create this div in HTML if you want summary text
+  const ctx = document.getElementById("vipRevenueChart").getContext("2d");
+
+  let vipData = null;
+  let vipChart = null;
+
+  // Fetch mock data from backend
+  fetch('api/vip-bookings/')  // Adjust URL to your Django endpoint
+    .then((res) => res.json())
+    .then((data) => {
+      vipData = data;
+      populateYearSelect(data.years);
+      updateVipCard("all"); // Default to all years
+    })
+    .catch((err) => console.error("Failed to fetch VIP data:", err));
+
+  function populateYearSelect(years) {
+    // Add 'All Years' option first
+    const allOption = document.createElement("option");
+    allOption.value = "all";
+    allOption.textContent = "All Years";
+    vipYearSelect.appendChild(allOption);
+
+    years.forEach((year) => {
+      const option = document.createElement("option");
+      option.value = year;
+      option.textContent = year;
+      vipYearSelect.appendChild(option);
+    });
+
+    vipYearSelect.value = "all";
+    vipYearSelect.addEventListener("change", () => {
+      updateVipCard(vipYearSelect.value);
+    });
+  }
+
+  function updateVipCard(year) {
+    if (!vipData) return;
+
+    const bookings = vipData.top_revenue_bookings[year] || [];
+    if (bookings.length === 0) {
+      if (vipStatsSummary) vipStatsSummary.textContent = "No bookings for selected year.";
+      if (vipChart) vipChart.destroy();
+      return;
+    }
+
+    // Sort bookings by total_revenue descending
+    bookings.sort((a, b) => b.total_revenue - a.total_revenue);
+
+    // Update summary stats (optional)
+    if (vipStatsSummary) {
+      const totalBookings = bookings.length;
+      const avgAdr = (bookings.reduce((sum, b) => sum + b.adr, 0) / totalBookings).toFixed(2);
+      vipStatsSummary.textContent = `Total VIP Bookings: ${totalBookings} | Average ADR: $${avgAdr}`;
+    }
+
+    // Prepare data for Chart.js horizontal bar
+    const labels = bookings.map((b) => `${b.guest_name} (${b.reservation_id})`);
+    const revenues = bookings.map((b) => b.total_revenue);
+
+    // Create or update chart
+    if (vipChart) {
+      vipChart.data.labels = labels;
+      vipChart.data.datasets[0].data = revenues;
+      vipChart.update();
+    } else {
+      vipChart = new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: "Total Revenue ($)",
+              data: revenues,
+              backgroundColor: "rgba(44, 62, 80, 0.7)",
+            },
+          ],
+        },
+        options: {
+          indexAxis: "y",
+          responsive: true,
+          scales: {
+            x: { beginAtZero: true },
+          },
+          plugins: {
+            legend: { display: false },
+            tooltip: { enabled: true },
+          },
+        },
+      });
+    }
+  }
+});
+
+
 
 
 

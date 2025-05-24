@@ -32,4 +32,5 @@ urlpatterns = [
     path("api/family-bookings/", views.family_bookings_mock, name="family_bookings"),
     path('api/high-risk-bookings/', views.high_cancellation_risk, name='high_risk_bookings'),
     path('api/loyal-guests-this-month/', views.loyal_guests_this_month, name='loyal-guests-this-month'),
+    path('api/vip-bookings/', views.vip_bookings_data, name='vip-bookings-data'),
 ]

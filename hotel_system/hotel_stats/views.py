@@ -323,3 +323,40 @@ def loyal_guests_this_month(request):
         "new_percentage": new_percentage,
         "loyal_guests": loyal_guests
     })
+
+# views.py (mock data for VIP bookings)
+from django.http import JsonResponse
+
+def vip_bookings_data(request):
+    data = {
+        "years": [2022, 2023, 2024],
+        "top_revenue_bookings": {
+            "2022": [
+                {"reservation_id": "R2022-001", "guest_name": "Alice", "adr": 180, "total_nights": 5, "total_revenue": 900},
+                {"reservation_id": "R2022-002", "guest_name": "Bob", "adr": 170, "total_nights": 4, "total_revenue": 680},
+                {"reservation_id": "R2022-003", "guest_name": "Carol", "adr": 160, "total_nights": 3, "total_revenue": 480},
+            ],
+            "2023": [
+                {"reservation_id": "R2023-001", "guest_name": "David", "adr": 200, "total_nights": 6, "total_revenue": 1200},
+                {"reservation_id": "R2023-002", "guest_name": "Eva", "adr": 190, "total_nights": 3, "total_revenue": 570},
+                {"reservation_id": "R2023-003", "guest_name": "Frank", "adr": 175, "total_nights": 5, "total_revenue": 875},
+                {"reservation_id": "R2023-004", "guest_name": "Grace", "adr": 165, "total_nights": 4, "total_revenue": 660},
+            ],
+            "2024": [
+                {"reservation_id": "R2024-001", "guest_name": "Hannah", "adr": 210, "total_nights": 7, "total_revenue": 1470},
+                {"reservation_id": "R2024-002", "guest_name": "Ian", "adr": 195, "total_nights": 3, "total_revenue": 585},
+            ],
+            "all": [
+                {"reservation_id": "R2024-001", "guest_name": "Hannah", "adr": 210, "total_nights": 7, "total_revenue": 1470},
+                {"reservation_id": "R2023-001", "guest_name": "David", "adr": 200, "total_nights": 6, "total_revenue": 1200},
+                {"reservation_id": "R2023-002", "guest_name": "Eva", "adr": 190, "total_nights": 3, "total_revenue": 570},
+                {"reservation_id": "R2022-001", "guest_name": "Alice", "adr": 180, "total_nights": 5, "total_revenue": 900},
+                {"reservation_id": "R2023-003", "guest_name": "Frank", "adr": 175, "total_nights": 5, "total_revenue": 875},
+                {"reservation_id": "R2022-002", "guest_name": "Bob", "adr": 170, "total_nights": 4, "total_revenue": 680},
+                {"reservation_id": "R2023-004", "guest_name": "Grace", "adr": 165, "total_nights": 4, "total_revenue": 660},
+                {"reservation_id": "R2022-003", "guest_name": "Carol", "adr": 160, "total_nights": 3, "total_revenue": 480},
+                {"reservation_id": "R2024-002", "guest_name": "Ian", "adr": 195, "total_nights": 3, "total_revenue": 585},
+            ]
+        }
+    }
+    return JsonResponse(data)
