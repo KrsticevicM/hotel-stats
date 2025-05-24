@@ -286,3 +286,40 @@ def family_bookings_mock(request):
     data = mock_data.get(year, mock_data["2022"])
 
     return JsonResponse(data, safe=False)
+
+def loyal_guests_this_month(request):
+    # Expanded mock data for loyal guests (20 entries)
+    loyal_guests = [
+        {"reservation_id": "L10001", "guest_name": "Maria Lopez"},
+        {"reservation_id": "L10002", "guest_name": "John Doe"},
+        {"reservation_id": "L10003", "guest_name": "Sophia Turner"},
+        {"reservation_id": "L10004", "guest_name": "Liam Smith"},
+        {"reservation_id": "L10005", "guest_name": "Olivia Brown"},
+        {"reservation_id": "L10006", "guest_name": "Noah Wilson"},
+        {"reservation_id": "L10007", "guest_name": "Emma Davis"},
+        {"reservation_id": "L10008", "guest_name": "James Johnson"},
+        {"reservation_id": "L10009", "guest_name": "Ava Martinez"},
+        {"reservation_id": "L10010", "guest_name": "William Garcia"},
+        {"reservation_id": "L10011", "guest_name": "Isabella Rodriguez"},
+        {"reservation_id": "L10012", "guest_name": "Mason Hernandez"},
+        {"reservation_id": "L10013", "guest_name": "Mia Lopez"},
+        {"reservation_id": "L10014", "guest_name": "Ethan Gonzalez"},
+        {"reservation_id": "L10015", "guest_name": "Charlotte Wilson"},
+        {"reservation_id": "L10016", "guest_name": "Alexander Moore"},
+        {"reservation_id": "L10017", "guest_name": "Amelia Taylor"},
+        {"reservation_id": "L10018", "guest_name": "Benjamin Anderson"},
+        {"reservation_id": "L10019", "guest_name": "Harper Thomas"},
+        {"reservation_id": "L10020", "guest_name": "Elijah Jackson"},
+    ]
+
+    total_loyal_guests = len(loyal_guests)
+    total_guests_this_month = 80  # example total guests this month
+    repeat_percentage = round((total_loyal_guests / total_guests_this_month) * 100, 2)
+    new_percentage = round(100 - repeat_percentage, 2)
+
+    return JsonResponse({
+        "loyal_guest_count": total_loyal_guests,
+        "repeat_percentage": repeat_percentage,
+        "new_percentage": new_percentage,
+        "loyal_guests": loyal_guests
+    })

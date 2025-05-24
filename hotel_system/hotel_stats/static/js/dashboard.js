@@ -336,5 +336,31 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+document.addEventListener("DOMContentLoaded", function () {
+  fetchHighCancellationRisk();
+  fetchLoyalGuests();
+});
+
+function fetchLoyalGuests() {
+  fetch('/api/loyal-guests-this-month/')
+    .then(response => response.json())
+    .then(data => {
+      document.getElementById('loyal-guest-count').innerHTML = `Number of loyal guests: <strong>${data.loyal_guest_count}</strong>`;
+      document.getElementById('loyal-guest-percent').innerHTML = `Repeat guests: <strong>${data.repeat_percentage}%</strong> | New guests: <strong>${data.new_percentage}%</strong>`;
+
+      const list = document.getElementById('loyal-guest-list');
+      list.innerHTML = ""; // clear existing
+      data.loyal_guests.forEach(guest => {
+        const item = document.createElement('li');
+        item.textContent = `${guest.reservation_id} - ${guest.guest_name}`;
+        list.appendChild(item);
+      });
+    })
+    .catch(error => {
+      console.error('Error fetching loyal guests data:', error);
+    });
+}
+
+
 
 

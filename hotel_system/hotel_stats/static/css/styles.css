@@ -192,7 +192,7 @@ h2 {
     background-color: #e6f0ff;
     transform: scale(1.02);
 }
-#high-cancel-card ul{
+.scrollable-list{
   max-height: 180px;   /* max height before scrolling */
   overflow-y: auto;    /* vertical scrollbar when needed */
   padding-left: 20px;  /* for ul indentation */
