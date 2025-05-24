@@ -152,6 +152,32 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+document.addEventListener("DOMContentLoaded", function () {
+  fetchHighCancellationRisk();
+});
+
+function fetchHighCancellationRisk() {
+  fetch('/api/high-risk-bookings/')
+    .then(response => response.json())
+    .then(data => {
+      document.getElementById('high-risk-count').innerHTML = `Number of total reservations: <strong>${data.high_risk_count}</strong>`;
+      document.getElementById('high-risk-percentage').innerHTML = `Percentage: <strong>${data.high_risk_percentage}%</strong> of upcoming reservations`;
+
+
+      const list = document.getElementById('high-risk-list');
+      list.innerHTML = ""; // clear existing
+      data.high_risk_bookings.forEach(booking => {
+        const item = document.createElement('li');
+        item.textContent = `${booking.reservation_id} - ${booking.guest_name}`;
+        list.appendChild(item);
+      });
+    })
+    .catch(error => {
+      console.error('Error fetching high cancellation risk data:', error);
+    });
+}
+
+
 document.addEventListener("DOMContentLoaded", function() {
     const countriesList = document.querySelector('#topCountries ul');
     const countrySearchInput = document.querySelector('#countrySearch');
@@ -309,5 +335,6 @@ document.addEventListener("DOMContentLoaded", function () {
         fetchFamilyBookings(selectedYear);
     });
 });
+
 
 

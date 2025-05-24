@@ -192,4 +192,12 @@ h2 {
     background-color: #e6f0ff;
     transform: scale(1.02);
 }
-
+#high-cancel-card ul{
+  max-height: 180px;   /* max height before scrolling */
+  overflow-y: auto;    /* vertical scrollbar when needed */
+  padding-left: 20px;  /* for ul indentation */
+  margin-top: 15px;    /* spacing from other elements */
+  border: 1px solid #ddd;  /* subtle border to separate list */
+  border-radius: 8px;
+  background-color: #fafafa;
+}

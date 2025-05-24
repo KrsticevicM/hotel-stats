@@ -30,4 +30,5 @@ urlpatterns = [
     path('manage/get/', views.get_reservation, name='get_reservation'),
     path('additional/get/', views.get_additional_country_data, name='get_country_data'),
     path("api/family-bookings/", views.family_bookings_mock, name="family_bookings"),
+    path('api/high-risk-bookings/', views.high_cancellation_risk, name='high_risk_bookings'),
 ]

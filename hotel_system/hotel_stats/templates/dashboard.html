@@ -56,6 +56,18 @@
                 </ul>
             </div>
 
+            <div class="stats-card" id="high-cancel-card">
+                <h3> High Cancellation Risk</h3>
+                <p class="main-number" id="high-risk-count"></p>
+                <p class="sub-text" id="high-risk-percentage"></p>
+                <ul id="high-risk-list"></ul>
+            </div>
+
+            <div class="stats-card" id="countryStats">
+                <h3>Country Details</h3>
+                <p>Select a country to view additional statistics.</p>
+            </div>
+
             <!-- Family Bookings by Month -->
             <div class="stats-card" id="familyBookings">
                 <h3>Family Bookings per Month</h3>
@@ -66,12 +78,6 @@
                     {% endfor %}
                 </select>
                 <canvas id="familyBookingsChart"></canvas>
-            </div>
-
-
-            <div class="stats-card" id="countryStats">
-                <h3>Country Details</h3>
-                <p>Select a country to view additional statistics.</p>
             </div>
 
         </div>

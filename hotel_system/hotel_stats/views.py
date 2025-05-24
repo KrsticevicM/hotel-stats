@@ -204,6 +204,37 @@ def dashboard(request):
    return render(request, 'dashboard.html', context)
 
 
+def high_cancellation_risk(request):
+    # Mock data - expanded list
+    high_risk_bookings = [
+        {"reservation_id": "R12345", "guest_name": "Alice Johnson"},
+        {"reservation_id": "R23456", "guest_name": "Bob Smith"},
+        {"reservation_id": "R34567", "guest_name": "Charlie Brown"},
+        {"reservation_id": "R45678", "guest_name": "Diana Prince"},
+        {"reservation_id": "R56789", "guest_name": "Ethan Hunt"},
+        {"reservation_id": "R67890", "guest_name": "Fiona Gallagher"},
+        {"reservation_id": "R78901", "guest_name": "George Clooney"},
+        {"reservation_id": "R89012", "guest_name": "Hannah Montana"},
+        {"reservation_id": "R90123", "guest_name": "Ian Somerhalder"},
+        {"reservation_id": "R01234", "guest_name": "Jessica Jones"},
+        {"reservation_id": "R11223", "guest_name": "Kevin Hart"},
+        {"reservation_id": "R22334", "guest_name": "Laura Palmer"},
+        {"reservation_id": "R33445", "guest_name": "Michael Scott"},
+        {"reservation_id": "R44556", "guest_name": "Nancy Drew"},
+        {"reservation_id": "R55667", "guest_name": "Oscar Wilde"},
+    ]
+
+    total_high_risk = len(high_risk_bookings)
+    total_upcoming = 120  # example total upcoming reservations
+    high_risk_percentage = round((total_high_risk / total_upcoming) * 100, 2)
+
+    return JsonResponse({
+        "high_risk_count": total_high_risk,
+        "high_risk_percentage": high_risk_percentage,
+        "high_risk_bookings": high_risk_bookings
+    })
+
+
 def get_additional_country_data(request):
    #country_code = request.GET.get('country_code')
    #country_name = translate_country(country_code)
