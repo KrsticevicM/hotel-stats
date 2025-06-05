@@ -1,0 +1,7 @@
+Django==5.1.6
+sqlparse==0.5.3
+typing_extensions==4.12.2
+pycountry==24.6.1
+pyparsing==3.2.3
+rdflib==7.1.3
+SPARQLWrapper==2.0.0
