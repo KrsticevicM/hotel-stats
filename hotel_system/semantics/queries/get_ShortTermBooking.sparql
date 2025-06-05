@@ -1,0 +1,6 @@
+PREFIX ex: <http://example.org/>
+
+SELECT ?booking
+WHERE {
+  ?booking a ex:ShortTermBooking .
+}
