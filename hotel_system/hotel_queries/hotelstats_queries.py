@@ -237,7 +237,9 @@ def get_high_cancellation_risk_bookings():
     sparql = SPARQLWrapper(GRAPHDB_ENDPOINT)
 
     today = date.today().isoformat()
-    today = "2015-06-04"
+    
+    #for testing purposes
+    #today = "2015-06-04"
 
     sparql.setQuery(f"""
         PREFIX : <http://example.org/hotel-ontology/1.0.0.3#>
@@ -299,7 +301,9 @@ def get_total_upcoming():
     sparql = SPARQLWrapper(GRAPHDB_ENDPOINT)
 
     today = date.today().isoformat()
-    today = "2015-06-04"
+    
+    #for testing purposes
+    #today = "2015-06-04"
 
     sparql.setQuery(f"""
         PREFIX : <http://example.org/hotel-ontology/1.0.0.3#>

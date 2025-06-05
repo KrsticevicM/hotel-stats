@@ -160,8 +160,8 @@ function fetchHighCancellationRisk() {
   fetch('/api/high-risk-bookings/')
     .then(response => response.json())
     .then(data => {
-      document.getElementById('high-risk-count').innerHTML = `Number of total reservations: <strong>${data.high_risk_count}</strong>`;
-      document.getElementById('high-risk-percentage').innerHTML = `Percentage: <strong>${data.high_risk_percentage}%</strong> of upcoming reservations`;
+      document.getElementById('high-risk-count').innerHTML = `Number of total risk reservations: <strong>${data.high_risk_count}</strong>`;
+      document.getElementById('high-risk-percentage').innerHTML = `Percentage: <strong>${data.high_risk_percentage}%</strong> of upcoming risk reservations`;
 
 
       const list = document.getElementById('high-risk-list');
