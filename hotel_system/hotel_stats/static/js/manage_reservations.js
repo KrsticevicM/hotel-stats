@@ -27,22 +27,36 @@ document.getElementById("addReservationForm").addEventListener("submit", functio
  
     // Capture form values
     const country = document.getElementById("country").value;
+    const name = document.getElementById("name").value;
     const staysInWeekNights = document.getElementById("stays_in_week_nights").value;
     const staysInWeekendNights = document.getElementById("stays_in_weekend_nights").value;
     const arrivalDate = document.getElementById("arrivalDate").value;
     const hotelType = document.querySelector('input[name="hotelType"]:checked')?.value;
     const mealType = document.querySelector('input[name="meal"]:checked')?.value;
- 
+    const adults = document.getElementById("adults").value;
+    const children = document.getElementById("children").value;
+    const babies = document.getElementById("babies").value;
+    const leadTime = document.getElementById("leadTime").value;
+    const adr = document.getElementById("adr").value;
+    const isRepeatedGuest = document.querySelector('input[name="isRepeatedGuest"]:checked').value;
+
+
     // Validation check
-    if (!country || !arrivalDate || !hotelType || !mealType || !staysInWeekNights || !staysInWeekendNights) {
+    if (!country || !arrivalDate || !hotelType || !mealType || !staysInWeekNights || !staysInWeekendNights
+        || !name || !adults || !children || !babies || !leadTime || !adr || !isRepeatedGuest) {
         alert("Please fill in all fields before submitting!");
         return;
     }
 
     const weekNights = parseInt(staysInWeekNights);
     const weekendNights = parseInt(staysInWeekendNights);
+    const numAdults = parseInt(adults);
+    const numChildren = parseInt(children);
+    const numBabies = parseInt(babies);
+    const adr_value = parseInt(adr);
+    const lead_value = parseInt(leadTime);
 
-    if (weekNights < 0 || weekendNights < 0) {
+    if (weekNights < 0 || weekendNights < 0 || numAdults < 0 || numChildren < 0 || numBabies < 0 || adr_value < 0 || lead_value < 0) {
         alert("The number of nights cannot be negative.");
         return;
     }
@@ -64,7 +78,14 @@ document.getElementById("addReservationForm").addEventListener("submit", functio
         hotelType: hotelType,
         mealType: mealType,
         weekNights: weekNights,
-        weekendNights: weekendNights
+        weekendNights: weekendNights,
+        name: name,
+        repeatedGuest: isRepeatedGuest,
+        adr: adr_value,
+        leadTime: lead_value,
+        numberOfAdults: numAdults,
+        numberOfChildren: numChildren,
+        numberOfBabies: numBabies
     };
 
     fetch("/manage/add/", {
@@ -125,11 +146,18 @@ document.getElementById("getReservationForm").addEventListener("submit", functio
                 <p><strong>Reservation ID:</strong> ${reservation.id}</p>
                 <p><strong>Hotel Type:</strong> ${reservation.hotelType}</p>
                 <p><strong>Country:</strong> ${reservation.country}</p>
+                <p><strong>Adr:</strong> ${reservation.adr}</p>
+                <p><strong>Lead time:</strong> ${reservation.leadTime}</p>
                 <p><strong>Arrival Date:</strong> ${reservation.arrivalDate}</p>
                 <p><strong>Stays in Week Nights:</strong> ${reservation.staysInWeekNights}</p>
                 <p><strong>Stays in Weekend Nights:</strong> ${reservation.staysInWeekendNights}</p>
                 <p><strong>Meal Type:</strong> ${reservation.mealType}</p>
                 <p><strong>Cancelation status:</strong> ${reservation.isCanceled}</p>
+                <p><strong>Name:</strong> ${reservation.name}</p>
+                <p><strong>Number of adults:</strong> ${reservation.numberOfAdults}</p>
+                <p><strong>Number of children:</strong> ${reservation.numberOfChildren}</p>
+                <p><strong>Number of babies:</strong> ${reservation.numberOfBabies}</p>
+                <p><strong>Repeat guest:</strong> ${reservation.repeatedGuest}</p>
             `;
         } else {
             alert("No reservation found with the provided ID.");
@@ -152,8 +180,8 @@ document.getElementById("modifyReservationForm").addEventListener("submit", func
     const isCanceled = document.querySelector('input[name="isCanceled"]:checked')?.value;
     const arrivalDate = document.getElementById("modifyArrivalDate").value;
     const mealType = document.querySelector('input[name="meal"]:checked')?.value;
-    const staysInWeekNights = document.getElementById("modifyStaysInWeek").value;
-    const staysInWeekendNights = document.getElementById("modifyStaysInWeekend").value;
+    //const staysInWeekNights = document.getElementById("modifyStaysInWeek").value;
+    //const staysInWeekendNights = document.getElementById("modifyStaysInWeekend").value;
     
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
@@ -191,13 +219,13 @@ document.getElementById("modifyReservationForm").addEventListener("submit", func
         formData.is_canceled = isCanceled;
     }
 
-    if (stays_in_week_nights !== undefined){
+    /*if (stays_in_week_nights !== undefined){
         formData.weekNights = staysInWeekNights;
     }
 
     if (stays_in_weekend_nights !== undefined){
         formData.weekendNights = staysInWeekendNights;
-    }
+    }*/
  
     fetch("/manage/update/", {
         method: "POST",

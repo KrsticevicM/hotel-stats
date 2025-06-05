@@ -1,0 +1,14 @@
+PREFIX ex: <http://example.org/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX : <http://example.org/hotel-ontology/1.0.0.3#>
+
+INSERT {
+  ?booking a :LoyalGuestThisMonth .
+}
+WHERE {
+  VALUES ?booking { {{booking_uri}} } 
+
+  ?booking ex:isRepeatedGuest ?rep .
+
+  FILTER(xsd:integer(?rep) = 1)
+}

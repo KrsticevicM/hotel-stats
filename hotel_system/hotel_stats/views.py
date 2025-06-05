@@ -4,6 +4,8 @@ from django.http import JsonResponse
 
 from hotel_queries.hotelstats_queries import get_meals_data, get_countries_count, get_stays_per_month, get_reservations_per_month, get_possible_years
 from hotel_queries.management_queries import delete_reservation_query, add_reservation_query, update_reservation_query, get_reservation_query
+
+from hotel_queries.hotelstats_queries import get_timing_data, get_loyal_guests_month, get_family_booking_counts, get_total_booking_per_month, get_high_cancellation_risk_bookings, get_total_upcoming, get_vip, get_vip_stats
 from hotel_queries.wikidata_dbpedia_exp import get_country_statistics
 
 from django.contrib.admin.views.decorators import staff_member_required
@@ -11,6 +13,8 @@ from django.views.decorators.csrf import csrf_exempt
 
 import pycountry
 from calendar import month_name
+
+from datetime import datetime
 
 
 @staff_member_required
@@ -52,6 +56,7 @@ def add_reservation(request):
    if request.method == "POST":
       try:
          data = json.loads(request.body)
+         print(data)
 
          if not data:
             return JsonResponse({"success": False, "message": "Reservation data is required"}, status=400)
@@ -114,11 +119,18 @@ def get_reservation(request):
                   'id': result["id"],
                   'hotelType': result["hotelType"],
                   'country': result["country"],
+                  "adr": result["adr"],
+                  "leadTime": result["leadTime"],
                   'arrivalDate': result["arrivalDate"],
                   'staysInWeekNights': result["staysInWeekNights"],
                   'staysInWeekendNights': result["staysInWeekendNights"],
                   'mealType': result["mealType"],
-                  'isCanceled': result["isCanceled"]
+                  'isCanceled': result["isCanceled"],
+                  "name": result["name"],
+                  "numberOfAdults": result["numberOfAdults"],
+                  "numberOfChildren": result["numberOfChildren"],
+                  "numberOfBabies": result["numberOfBabies"],
+                  "repeatedGuest": result["repeatedGuest"]
                }
             })
          else:
@@ -204,37 +216,6 @@ def dashboard(request):
    return render(request, 'dashboard.html', context)
 
 
-def high_cancellation_risk(request):
-    # Mock data - expanded list
-    high_risk_bookings = [
-        {"reservation_id": "R12345", "guest_name": "Alice Johnson"},
-        {"reservation_id": "R23456", "guest_name": "Bob Smith"},
-        {"reservation_id": "R34567", "guest_name": "Charlie Brown"},
-        {"reservation_id": "R45678", "guest_name": "Diana Prince"},
-        {"reservation_id": "R56789", "guest_name": "Ethan Hunt"},
-        {"reservation_id": "R67890", "guest_name": "Fiona Gallagher"},
-        {"reservation_id": "R78901", "guest_name": "George Clooney"},
-        {"reservation_id": "R89012", "guest_name": "Hannah Montana"},
-        {"reservation_id": "R90123", "guest_name": "Ian Somerhalder"},
-        {"reservation_id": "R01234", "guest_name": "Jessica Jones"},
-        {"reservation_id": "R11223", "guest_name": "Kevin Hart"},
-        {"reservation_id": "R22334", "guest_name": "Laura Palmer"},
-        {"reservation_id": "R33445", "guest_name": "Michael Scott"},
-        {"reservation_id": "R44556", "guest_name": "Nancy Drew"},
-        {"reservation_id": "R55667", "guest_name": "Oscar Wilde"},
-    ]
-
-    total_high_risk = len(high_risk_bookings)
-    total_upcoming = 120  # example total upcoming reservations
-    high_risk_percentage = round((total_high_risk / total_upcoming) * 100, 2)
-
-    return JsonResponse({
-        "high_risk_count": total_high_risk,
-        "high_risk_percentage": high_risk_percentage,
-        "high_risk_bookings": high_risk_bookings
-    })
-
-
 def get_additional_country_data(request):
    #country_code = request.GET.get('country_code')
    #country_name = translate_country(country_code)
@@ -246,76 +227,41 @@ def get_additional_country_data(request):
    
    return JsonResponse(stats)
 
-def family_bookings_mock(request):
-    # Get the year from the query parameter (default to 2022 if not provided)
-    year = request.GET.get("year", "2022")
 
-    # Example mock data (replace with dynamic logic or SPARQL later)
-    mock_data = {
-        "2022": [
-            {"month": "January", "count": 12},
-            {"month": "February", "count": 9},
-            {"month": "March", "count": 15},
-            {"month": "April", "count": 17},
-            {"month": "May", "count": 20},
-            {"month": "June", "count": 23},
-            {"month": "July", "count": 30},
-            {"month": "August", "count": 28},
-            {"month": "September", "count": 19},
-            {"month": "October", "count": 14},
-            {"month": "November", "count": 10},
-            {"month": "December", "count": 8},
-        ],
-        "2023": [
-            {"month": "January", "count": 14},
-            {"month": "February", "count": 11},
-            {"month": "March", "count": 18},
-            {"month": "April", "count": 20},
-            {"month": "May", "count": 25},
-            {"month": "June", "count": 27},
-            {"month": "July", "count": 35},
-            {"month": "August", "count": 32},
-            {"month": "September", "count": 22},
-            {"month": "October", "count": 16},
-            {"month": "November", "count": 13},
-            {"month": "December", "count": 9},
-        ]
-    }
-
-    # Get the mock data for the selected year
-    data = mock_data.get(year, mock_data["2022"])
+def get_booking_timing_stats(request):
+    data = get_timing_data()
+    #print(data)
 
     return JsonResponse(data, safe=False)
 
-def loyal_guests_this_month(request):
-    # Expanded mock data for loyal guests (20 entries)
-    loyal_guests = [
-        {"reservation_id": "L10001", "guest_name": "Maria Lopez"},
-        {"reservation_id": "L10002", "guest_name": "John Doe"},
-        {"reservation_id": "L10003", "guest_name": "Sophia Turner"},
-        {"reservation_id": "L10004", "guest_name": "Liam Smith"},
-        {"reservation_id": "L10005", "guest_name": "Olivia Brown"},
-        {"reservation_id": "L10006", "guest_name": "Noah Wilson"},
-        {"reservation_id": "L10007", "guest_name": "Emma Davis"},
-        {"reservation_id": "L10008", "guest_name": "James Johnson"},
-        {"reservation_id": "L10009", "guest_name": "Ava Martinez"},
-        {"reservation_id": "L10010", "guest_name": "William Garcia"},
-        {"reservation_id": "L10011", "guest_name": "Isabella Rodriguez"},
-        {"reservation_id": "L10012", "guest_name": "Mason Hernandez"},
-        {"reservation_id": "L10013", "guest_name": "Mia Lopez"},
-        {"reservation_id": "L10014", "guest_name": "Ethan Gonzalez"},
-        {"reservation_id": "L10015", "guest_name": "Charlotte Wilson"},
-        {"reservation_id": "L10016", "guest_name": "Alexander Moore"},
-        {"reservation_id": "L10017", "guest_name": "Amelia Taylor"},
-        {"reservation_id": "L10018", "guest_name": "Benjamin Anderson"},
-        {"reservation_id": "L10019", "guest_name": "Harper Thomas"},
-        {"reservation_id": "L10020", "guest_name": "Elijah Jackson"},
-    ]
+def family_bookings(request):
+    year = request.GET.get("year", "2015")
+    #print(year)
 
+    data = sort_by_month(get_family_booking_counts(year))
+
+    return JsonResponse(data, safe=False)
+
+
+def loyal_guests_this_month(request):
+    month_name = datetime.now().strftime("%B")
+    year = datetime.now().strftime("%Y")
+    
+    #for testing purposes
+    month_name = "July"
+    year = 2015
+
+    loyal_guests = get_loyal_guests_month(month_name, year)
     total_loyal_guests = len(loyal_guests)
-    total_guests_this_month = 80  # example total guests this month
-    repeat_percentage = round((total_loyal_guests / total_guests_this_month) * 100, 2)
-    new_percentage = round(100 - repeat_percentage, 2)
+
+    total_guests_this_month = get_total_booking_per_month(month_name, year)
+
+    if (total_guests_this_month == 0):
+      repeat_percentage = 0
+      new_percentage = 0
+    else:
+      repeat_percentage = round((total_loyal_guests / total_guests_this_month) * 100, 2) #loyal guests
+      new_percentage = round(100 - repeat_percentage, 2) #non-loyal guests
 
     return JsonResponse({
         "loyal_guest_count": total_loyal_guests,
@@ -324,48 +270,36 @@ def loyal_guests_this_month(request):
         "loyal_guests": loyal_guests
     })
 
-# views.py (mock data for VIP bookings)
-from django.http import JsonResponse
+
+def high_cancellation_risk(request):
+
+    high_risk_bookings = get_high_cancellation_risk_bookings()
+    total_high_risk = len(high_risk_bookings)
+
+    total_upcoming = get_total_upcoming()
+
+    if (total_upcoming == 0):
+      high_risk_percentage = 0
+    else:
+      high_risk_percentage = round((total_high_risk / total_upcoming) * 100, 2)
+
+    return JsonResponse({
+        "high_risk_count": total_high_risk,
+        "high_risk_percentage": high_risk_percentage,
+        "high_risk_bookings": high_risk_bookings
+    })
+
 
 def vip_bookings_data(request):
-    data = {
-        "years": [2022, 2023, 2024],
-        "top_revenue_bookings": {
-            "2022": [
-                {"reservation_id": "R2022-001", "guest_name": "Alice", "adr": 180, "total_nights": 5, "total_revenue": 900},
-                {"reservation_id": "R2022-002", "guest_name": "Bob", "adr": 170, "total_nights": 4, "total_revenue": 680},
-                {"reservation_id": "R2022-003", "guest_name": "Carol", "adr": 160, "total_nights": 3, "total_revenue": 480},
-            ],
-            "2023": [
-                {"reservation_id": "R2023-001", "guest_name": "David", "adr": 200, "total_nights": 6, "total_revenue": 1200},
-                {"reservation_id": "R2023-002", "guest_name": "Eva", "adr": 190, "total_nights": 3, "total_revenue": 570},
-                {"reservation_id": "R2023-003", "guest_name": "Frank", "adr": 175, "total_nights": 5, "total_revenue": 875},
-                {"reservation_id": "R2023-004", "guest_name": "Grace", "adr": 165, "total_nights": 4, "total_revenue": 660},
-            ],
-            "2024": [
-                {"reservation_id": "R2024-001", "guest_name": "Hannah", "adr": 210, "total_nights": 7, "total_revenue": 1470},
-                {"reservation_id": "R2024-002", "guest_name": "Ian", "adr": 195, "total_nights": 3, "total_revenue": 585},
-            ],
-            "all": [
-                {"reservation_id": "R2024-001", "guest_name": "Hannah", "adr": 210, "total_nights": 7, "total_revenue": 1470},
-                {"reservation_id": "R2023-001", "guest_name": "David", "adr": 200, "total_nights": 6, "total_revenue": 1200},
-                {"reservation_id": "R2023-002", "guest_name": "Eva", "adr": 190, "total_nights": 3, "total_revenue": 570},
-                {"reservation_id": "R2022-001", "guest_name": "Alice", "adr": 180, "total_nights": 5, "total_revenue": 900},
-                {"reservation_id": "R2023-003", "guest_name": "Frank", "adr": 175, "total_nights": 5, "total_revenue": 875},
-                {"reservation_id": "R2022-002", "guest_name": "Bob", "adr": 170, "total_nights": 4, "total_revenue": 680},
-                {"reservation_id": "R2023-004", "guest_name": "Grace", "adr": 165, "total_nights": 4, "total_revenue": 660},
-                {"reservation_id": "R2022-003", "guest_name": "Carol", "adr": 160, "total_nights": 3, "total_revenue": 480},
-                {"reservation_id": "R2024-002", "guest_name": "Ian", "adr": 195, "total_nights": 3, "total_revenue": 585},
-            ]
-        }
-    }
-    return JsonResponse(data)
+    year = request.GET.get("year", "2015")
 
-def get_booking_timing_stats(request):
-    # Mock response to simulate GraphDB query result
-    data = [
-        {"bookingType": "LastMinuteBooking", "count": 43},
-        {"bookingType": "ShortTermBooking", "count": 75},
-        {"bookingType": "PlannedBooking", "count": 32},
-    ]
-    return JsonResponse(data, safe=False)
+    data = get_vip(year)
+    data_stats = get_vip_stats(year)
+
+    return JsonResponse({
+        "bookings": data,
+        "stats": {
+            "count": data_stats["count"],
+            "avg_adr": data_stats["avg_adr"],
+        }
+    })

@@ -1,5 +1,7 @@
 from SPARQLWrapper import SPARQLWrapper, POST, JSON
 
+from hotel_queries.inference_help.run_inference import run_queries
+
 GRAPHDB_ENDPOINT_STAT = "http://localhost:7200/repositories/hotels/statements"
 GRAPHDB_ENDPOINT = "http://localhost:7200/repositories/hotels"
 
@@ -41,11 +43,19 @@ def get_reservation_query(id):
         "id": id,  
         "hotelType": result_dict.get("http://schema.org/hotel"),
         "country": result_dict.get("http://schema.org/addressCountry"),
+        "adr": result_dict.get("http://example.org/adr"),
+        "repeatedGuest": result_dict.get("http://example.org/isRepeatedGuest"),
         "arrivalDate": f"{result_dict.get('http://schema.org/arrivalDateYear')}-{result_dict.get('http://schema.org/arrivalDateMonth')}-{result_dict.get('http://example.org/arrivalDay')}",
+        "leadTime": result_dict.get("http://example.org/leadTime"),
         "staysInWeekNights": int(result_dict.get("http://example.org/weekNights", 0)),
         "staysInWeekendNights": int(result_dict.get("http://example.org/weekendNights", 0)),
         "mealType": result_dict.get("http://schema.org/meal"),
-        "isCanceled": result_dict.get("http://example.org/isCanceled")
+        "isCanceled": result_dict.get("http://example.org/isCanceled"),
+        "name": result_dict.get("http://example.org/name"),
+        "numberOfAdults": result_dict.get("http://schema.org/numberOfAdults"),
+        "numberOfChildren": result_dict.get("http://example.org/children"),
+        "numberOfBabies": result_dict.get("http://example.org/babies"),
+
     }
     print(filtered_results)
 
@@ -109,13 +119,25 @@ def add_reservation_query(data):
             {booking_uri} <http://schema.org/hotel> "{data['hotelType']}" .
             {booking_uri} <http://example.org/isCanceled> "0" ^^xsd:boolean .
             {booking_uri} <http://schema.org/meal> "{data['mealType']}" .
+            {booking_uri} <http://example.org/leadTime> "{data['leadTime']}"^^xsd:integer .
+            {booking_uri} <http://schema.org/numberOfAdults> "{data['numberOfAdults']}"^^xsd:integer .
+            {booking_uri} <http://example.org/children> "{data['numberOfChildren']}"^^xsd:integer .
+            {booking_uri} <http://example.org/babies> "{data['numberOfBabies']}"^^xsd:integer .
+            {booking_uri} <http://example.org/isRepeatedGuest> "{data['repeatedGuest']}"^^xsd:boolean .
+            {booking_uri} <http://example.org/adr> "{data['adr']}"^^xsd:integer .
+            {booking_uri} <http://example.org/name> "{data['name']}" .
+
         }}
     """
     sparql.setQuery(query)
     sparql.setMethod(POST)
     sparql.setReturnFormat(JSON)
 
-    response = sparql.query()
+    try:
+        response = sparql.query()
+        run_queries(booking_uri)
+    except Exception as e:
+        response = None
 
     return response, id
 
@@ -165,9 +187,10 @@ def update_reservation_query(data):
         "day": ("<http://example.org/arrivalDay>", '^^xsd:integer'),
         "is_canceled": ("<http://example.org/isCanceled>", '^^xsd:boolean'),
         "mealType": ("<http://schema.org/meal>", ''),
-        "weekendNights": ("<http://example.org/weekendNights>", '^^xsd:integer'),
-        "weekNights": ("<http://example.org/weekNights>", '^^xsd:integer')
     }
+    """    "weekendNights": ("<http://example.org/weekendNights>", '^^xsd:integer'),
+        "weekNights": ("<http://example.org/weekNights>", '^^xsd:integer')
+    }"""
 
     for key, (rdf_property, datatype) in field_mappings.items():
         value = data.get(key)

@@ -57,3 +57,5 @@ with open(input_file, newline='', encoding='utf-8-sig', errors='replace') as csv
             triple("<http://example.org/reservationStatus>", row["reservation_status"])
             triple("<http://example.org/reservationStatusDate>", row["reservation_status_date"], "http://www.w3.org/2001/XMLSchema#date")
             triple("<http://example.org/customerType>", row["customer_type"])
+
+            triple("<http://example.org/name>", row["name"], "http://www.w3.org/2001/XMLSchema#string")

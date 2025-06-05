@@ -1,0 +1,17 @@
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX ex: <http://example.org/>
+PREFIX : <http://example.org/hotel-ontology/1.0.0.3#>
+
+INSERT {
+  ?booking a :HighCancellationRisk .
+}
+WHERE {
+  VALUES ?booking { {{booking_uri}} }
+
+  ?booking ex:leadTime ?lead ;
+           ex:isRepeatedGuest ?rep .
+
+  FILTER (
+    xsd:integer(?rep) = 0 && xsd:integer(?lead) > 60
+  )
+}

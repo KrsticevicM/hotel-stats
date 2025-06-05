@@ -9,38 +9,36 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
-<body>
-
+<body class="h-card">
     <div class="container">
-        <h1>Hotel Statistics Dashboard</h1>
+        <h1 class="p-name">Hotel Statistics Dashboard</h1>
 
         <!-- Stats Sections -->
         <div class="stats-section">
-            <!-- MOst popular meal plans -->
-            <div class="stats-card" id="mostPopularMeals">
-                <h3>Meal Plans</h3>
+
+            <!-- Most popular meal plans -->
+            <div class="stats-card h-item" id="mostPopularMeals">
+                <h3 class="p-name">Meal Plans</h3>
                 <canvas id="mealsChart"></canvas>
-            </div>          
+            </div>
 
             <!-- Reservations by Month -->
-            <div class="stats-card" id="reservationsByMonth">
-                <h3>Reservations per Month</h3>
-                <!-- Year Selection Dropdown -->
+            <div class="stats-card h-event" id="reservationsByMonth">
+                <h3 class="p-name">Reservations per Month</h3>
                 <label for="yearSelect">Select Year:</label>
-                <select id="yearFilterRes">
+                <select id="yearFilterRes" class="dt-start">
                     {% for year in years %}
                         <option value="{{ year }}" {% if year == years|last %}selected{% endif %}>{{ year }}</option>
                     {% endfor %}
                 </select>
-
                 <canvas id="reservationsChart"></canvas>
             </div>
 
             <!-- Average Stay per Month -->
-            <div class="stats-card" id="averageStay">
-                <h3>Average Stay per Month</h3>
+            <div class="stats-card h-statistics" id="averageStay">
+                <h3 class="p-name">Average Stay per Month</h3>
                 <label for="yearSelect">Select Year:</label>
-                <select id="yearFilterAvgStay">
+                <select id="yearFilterAvgStay" class="dt-start">
                     {% for year in years %}
                         <option value="{{ year }}" {% if year == years|last %}selected{% endif %}>{{ year }}</option>
                     {% endfor %}
@@ -48,31 +46,34 @@
                 <canvas id="averageStayChart"></canvas>
             </div>
 
-            <div class="stats-card" id="topCountries">
-                <h3>Top Countries</h3>
+            <!-- Top Countries -->
+            <div class="stats-card h-geo" id="topCountries">
+                <h3 class="p-name">Top Countries</h3>
                 <input type="text" id="countrySearch" placeholder="Search for a country..." />
                 <ul>
                     <li class="placeholder">List of top 10 countries from all visitors</li>
                 </ul>
             </div>
 
-            <div class="stats-card" id="high-cancel-card">
-                <h3> High Cancellation Risk</h3>
-                <p class="main-number" id="high-risk-count"></p>
-                <p class="sub-text" id="high-risk-percentage"></p>
+            <!-- High Cancellation Risk -->
+            <div class="stats-card h-warning" id="high-cancel-card">
+                <h3 class="p-name">High Cancellation Risk</h3>
+                <p class="main-number p-value" id="high-risk-count"></p>
+                <p class="sub-text p-description" id="high-risk-percentage"></p>
                 <ul id="high-risk-list" class="scrollable-list"></ul>
             </div>
 
-            <div class="stats-card" id="countryStats">
-                <h3>Country Details</h3>
-                <p>Select a country to view additional statistics.</p>
+            <!-- Country Stats -->
+            <div class="stats-card h-geo" id="countryStats">
+                <h3 class="p-name">Country Details</h3>
+                <p class="p-note">Select a country to view additional statistics.</p>
             </div>
 
-            <!-- Family Bookings by Month -->
-            <div class="stats-card" id="familyBookings">
-                <h3>Family Bookings per Month</h3>
+            <!-- Family Bookings -->
+            <div class="stats-card h-event" id="familyBookings">
+                <h3 class="p-name">Family Bookings per Month</h3>
                 <label for="yearSelect">Select Year:</label>
-                <select id="yearFilterFamily">
+                <select id="yearFilterFamily" class="dt-start">
                     {% for year in years %}
                         <option value="{{ year }}" {% if year == years|last %}selected{% endif %}>{{ year }}</option>
                     {% endfor %}
@@ -80,38 +81,38 @@
                 <canvas id="familyBookingsChart"></canvas>
             </div>
 
-            <div class="stats-card" id="loyal-guests-card">
-                <h3>Loyal Guests This Month</h3>
-                <p id="loyal-guest-count">Number of loyal guests: <strong>...</strong></p>
-                <p id="loyal-guest-percent">Repeat guests: <strong>...</strong>% | New guests: <strong>...</strong>%</p>
+            <!-- Loyal Guests -->
+            <div class="stats-card h-card" id="loyal-guests-card">
+                <h3 class="p-name">Loyal Guests This Month</h3>
+                <p id="loyal-guest-count" class="p-note">Number of loyal guests: <strong>...</strong></p>
+                <p id="loyal-guest-percent" class="p-note">Repeat guests: <strong>...</strong>% | New guests: <strong>...</strong>%</p>
                 <ul id="loyal-guest-list" class="scrollable-list"></ul>
             </div>
 
-            <div class="stats-card" id="vipGuestsCard">
-                <h3>Top VIPs with high ADR (Average Daily Rate)</h3>
+            <!-- VIP Guests -->
+            <div class="stats-card h-card" id="vipGuestsCard">
+                <h3 class="p-name">Top VIPs with high ADR (Average Daily Rate)</h3>
                 <label for="vipYearSelect">Select Year:</label>
-                <select id="vipYearSelect">
+                <select id="vipYearSelect" class="dt-start">
                     {% for year in years %}
-                    <option value="{{ year }}" {% if year == years|last %}selected{% endif %}>{{ year }}</option>
+                        <option value="{{ year }}" {% if year == years|last %}selected{% endif %}>{{ year }}</option>
                     {% endfor %}
                 </select>
-
                 <canvas id="vipRevenueChart"></canvas>
-                <div id="vipStatsSummary"></div>
+                <div id="vipStatsSummary" class="p-summary"></div>
             </div>
 
-            <div class="stats-card" id="bookingTimingCard">
-                <h3>Booking Planning Behavior</h3>
+            <!-- Booking Behavior -->
+            <div class="stats-card h-event" id="bookingTimingCard">
+                <h3 class="p-name">Booking Planning Behavior</h3>
                 <canvas id="bookingTimingChart"></canvas>
             </div>
-
 
         </div>
 
         <div class="manage-link-container">
-            <a href="/manage-reservations" class="manage-link">Manage Reservations</a>
+            <a href="/manage-reservations" class="manage-link u-url">Manage Reservations</a>
         </div>
-        
     </div>
 
     <script>

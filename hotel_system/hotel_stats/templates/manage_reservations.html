@@ -28,6 +28,9 @@
                         </label>
                     </div>
 
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" placeholder="Enter full name" required>
+
                     <label for="country">Country</label>
                     <select id="country" name="country">
                         <option value="" disabled selected>Select a Country</option>
@@ -36,6 +39,10 @@
                     <!-- Arrival Date -->
                     <label for="arrivalDate">Arrival Date</label>
                     <input type="date" id="arrivalDate" name="arrivalDate">
+
+                    <!-- Lead Time -->
+                    <label for="leadTime">Lead Time (days in advance)</label>
+                    <input type="number" id="leadTime" name="leadTime" min="0" required>
 
                     <!-- Stays in Week Nights -->
                     <label for="stays_in_week_nights">Stays in Week Nights</label>
@@ -63,6 +70,26 @@
                         <label>
                             <input type="radio" name="meal" value="Other" id="otherMeal"> Other
                         </label>
+                    </div>
+
+                    <label for="adults">Number of Adults</label>
+                    <input type="number" id="adults" name="adults" min="1" required>
+
+                    <label for="children">Number of Children</label>
+                    <input type="number" id="children" name="children" min="0" required>
+
+                    <label for="babies">Number of Babies</label>
+                    <input type="number" id="babies" name="babies" min="0" required>
+
+                    <!-- ADR -->
+                    <label for="adr">ADR (Average Daily Rate)</label>
+                    <input type="number" id="adr" name="adr" min="0" required>
+
+                    <!-- Is Repeated Guest -->
+                    <label for="isRepeatedGuest">Is Repeated Guest?</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="isRepeatedGuest" value="true" required> Yes</label>
+                        <label><input type="radio" name="isRepeatedGuest" value="false" required> No</label>
                     </div>
 
                     <button type="submit" class="manage-link">Add Reservation</button>
@@ -98,12 +125,12 @@
                     <input type="date" id="modifyArrivalDate" name="arrival_date">
 
                     <!-- Stays in Week Nights -->
-                    <label for="modifyStaysInWeek">Stays in Week Nights</label>
-                    <input type="number" id="modifyStaysInWeek" name="modifyStaysInWeek" placeholder="Enter number of week nights">
+                    <!-- <label for="modifyStaysInWeek">Stays in Week Nights</label>
+                    <input type="number" id="modifyStaysInWeek" name="modifyStaysInWeek" placeholder="Enter number of week nights"> -->
 
                     <!-- Stays in Weekend Nights -->
-                    <label for="modifyStaysInWeekend">Stays in Weekend Nights</label>
-                    <input type="number" id="modifyStaysInWeekend" name="modifyStaysInWeekend" placeholder="Enter number of weekend nights">
+                    <!-- <label for="modifyStaysInWeekend">Stays in Weekend Nights</label>
+                    <input type="number" id="modifyStaysInWeekend" name="modifyStaysInWeekend" placeholder="Enter number of weekend nights"> -->
         
 
                     <label for="isCanceled">Is the reservation canceled?</label>
