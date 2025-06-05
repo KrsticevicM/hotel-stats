@@ -1,8 +1,0 @@
-PREFIX : <http://example.org/hotel-ontology/1.0.0.3#>
-
-SELECT ?booking ?leadTime
-WHERE {
-  ?booking a :ShortNoticeBooking ;
-           <http://example.org/leadTime> ?leadTime .
-}
-ORDER BY ?leadTime

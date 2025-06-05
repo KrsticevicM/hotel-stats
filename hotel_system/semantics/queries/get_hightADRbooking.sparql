@@ -1,9 +1,0 @@
-PREFIX : <http://example.org/hotel-ontology/1.0.0.3#>
-PREFIX ex: <http://example.org/>
-
-SELECT ?booking ?adr
-WHERE {
-  ?booking a :HighADRBooking ;
-           ex:adr ?adr .
-}
-ORDER BY DESC(?adr)

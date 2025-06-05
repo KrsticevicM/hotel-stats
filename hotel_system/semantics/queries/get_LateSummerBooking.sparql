@@ -1,4 +1,0 @@
-PREFIX : <http://example.org/hotel-ontology/1.0.0.3#>
-SELECT ?booking WHERE {
-  ?booking a :LateSummerBooking .
-}
