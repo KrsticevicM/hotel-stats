@@ -2,7 +2,7 @@ from SPARQLWrapper import SPARQLWrapper, POST, URLENCODED
 import os
 
 # Config
-GRAPHDB_ENDPOINT = "http://localhost:7200/repositories/hotels/statements"
+GRAPHDB_ENDPOINT = "http://localhost:7200/repositories/hotel-stats/statements"
 INFERENCES_DIR = "semantics/rules/inferences_insert"
 
 # Set up GraphDB connection
