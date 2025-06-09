@@ -3,7 +3,7 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX : <http://example.org/hotel-ontology/1.0.0.3#>
 
 INSERT {
-  ?booking a :HighCancellationRisk .
+  ?booking a ex:HighCancellationRisk .
 }
 WHERE {
   ?booking ex:leadTime ?lead ;

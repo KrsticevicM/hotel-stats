@@ -3,7 +3,7 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX : <http://example.org/hotel-ontology/1.0.0.3#>
 
 INSERT {
-  ?booking a :LoyalGuestThisMonth .
+  ?booking a ex:LoyalGuestThisMonth .
 }
 WHERE {
   ?booking ex:isRepeatedGuest ?rep .

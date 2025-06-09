@@ -3,7 +3,7 @@ PREFIX ex: <http://example.org/>
 PREFIX : <http://example.org/hotel-ontology/1.0.0.3#>
 
 INSERT {
-  ?booking a :LastMinuteBooking .
+  ?booking a ex:LastMinuteBooking .
 }
 WHERE {
   VALUES ?booking { {{booking_uri}} }
