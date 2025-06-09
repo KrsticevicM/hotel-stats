@@ -1,6 +1,6 @@
 from SPARQLWrapper import SPARQLWrapper, POST, JSON
 
-from hotel_queries.inference_help.run_inference import run_queries
+from hotel_queries.inference_help.run_inference import run_queries, run_highadr_query
 
 GRAPHDB_ENDPOINT_STAT = "http://localhost:7200/repositories/hotels/statements"
 GRAPHDB_ENDPOINT = "http://localhost:7200/repositories/hotels"
@@ -173,7 +173,9 @@ def update_reservation_query(data):
 
     uri = f"<http://example.org/booking/{data['id']}>"
 
-    PREFIXES = """PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>"""
+    PREFIXES = """PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+    PREFIX: ex: <http://example.org/>
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"""
 
     delete_statements = []
     insert_statements = []
@@ -192,6 +194,7 @@ def update_reservation_query(data):
         "weekNights": ("<http://example.org/weekNights>", '^^xsd:integer')
     }"""
 
+    extra_delete_added = False 
     for key, (rdf_property, datatype) in field_mappings.items():
         value = data.get(key)
 
@@ -199,6 +202,12 @@ def update_reservation_query(data):
             delete_statements.append(f"{uri} {rdf_property} ?{key} .")
             insert_statements.append(f'{uri} {rdf_property} "{value}"{datatype} .')
             where_statements.append(f"OPTIONAL {{ {uri} {rdf_property} ?{key} . }}")
+
+            if key in ("weekendNights", "weekNight") and not extra_delete_added:
+                delete_statements.append(f"{uri} a ex:HighADRVIP .")
+                where_statements.append(f"OPTIONAL {{ {uri} a ex:HighADRVIP . }}")
+                extra_delete_added = True        
+        
 
     if not delete_statements:
         return None  
@@ -222,7 +231,15 @@ def update_reservation_query(data):
     sparql.setQuery(query)
     sparql.query()
 
-    response = sparql.query()
+    try:
+        response = sparql.query()
+
+        if extra_delete_added:
+            run_highadr_query(uri)
+
+    except Exception as e:
+        response = None
+    #response = sparql.query()
 
     return response
 
