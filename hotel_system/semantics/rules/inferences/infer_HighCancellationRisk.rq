@@ -1,0 +1,14 @@
+PREFIX ex: <http://example.org/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+CONSTRUCT {
+  ?booking a ex:HighCancellationRisk .
+}
+WHERE {
+  ?booking ex:leadTime ?lead ;
+           ex:isRepeatedGuest ?rep .
+
+  FILTER (
+    xsd:integer(?rep) = 0 && xsd:integer(?lead) > 60
+  )
+}

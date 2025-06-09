@@ -247,9 +247,12 @@ def loyal_guests_this_month(request):
     month_name = datetime.now().strftime("%B")
     year = datetime.now().strftime("%Y")
     
+    print(month_name)
+    print(year)
+
     #for testing purposes
-    month_name = "July"
-    year = 2015
+    #month_name = "July"
+    #year = 2015
 
     loyal_guests = get_loyal_guests_month(month_name, year)
     total_loyal_guests = len(loyal_guests)

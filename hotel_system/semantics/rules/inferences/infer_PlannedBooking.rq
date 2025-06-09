@@ -3,9 +3,10 @@ PREFIX ex: <http://example.org/>
 PREFIX : <http://example.org/hotel-ontology/1.0.0.3#>
 
 INSERT {
+    
   ?booking a :PlannedBooking .
 }
 WHERE {
-  ?booking ex:leadTime ?lt .
-  FILTER(xsd:integer(?lt) > 7 && xsd:integer(?lt) <= 10)
+  ?booking ex:leadTime ?lead .
+  FILTER(xsd:integer(?lead) >= 8)
 }

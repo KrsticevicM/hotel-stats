@@ -1,0 +1,13 @@
+PREFIX ex: <http://example.org/>
+PREFIX schema: <http://schema.org/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+INSERT {
+  ?booking a ex:LoyalGuestThisMonth .
+}
+WHERE {
+  ?booking ex:isRepeatedGuest ?rep ;
+           schema:arrivalDateMonth ?month .
+
+  FILTER(xsd:integer(?rep) = 1 && ?month = "May")
+}

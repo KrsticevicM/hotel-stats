@@ -4,7 +4,7 @@ from SPARQLWrapper import SPARQLWrapper, JSON
 sparql = SPARQLWrapper("http://localhost:7200/repositories/hotels")
 
 # Carga la consulta desde archivo
-with open("semantics/queries/get_LastMinuteBooking.sparql", "r", encoding="utf-8") as file:
+with open("semantics/queries/get_ShortTermBooking.sparql", "r", encoding="utf-8") as file:
     query = file.read()
 
 # Configura la consulta

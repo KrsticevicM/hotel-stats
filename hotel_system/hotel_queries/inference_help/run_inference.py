@@ -35,6 +35,22 @@ def run_queries(booking_uri):
         print(f"Running {query_file.name} ...")
         run_query(sparql, query)
 
+def run_highadr_query(booking_uri):
+    sparql = SPARQLWrapper(SPARQL_ENDPOINT)
+    sparql.setMethod(POST)
+    sparql.setReturnFormat("json")
+
+    specific_query_file = "highAdr.rq"
+    query_file_path = Path(INFERENCES_DIR) / specific_query_file
+
+    print(f"✅ Using specific query file: {query_file_path.name}")
+    print("Processing...")
+
+    query = load_and_format_query(query_file_path, booking_uri=booking_uri)
+    print("Running inference for update ...")
+    run_query(sparql, query)
+
+
 """if __name__ == "__main__":
     booking_uri = "<http://example.org/booking/37>"
     run_queries(booking_uri)"""

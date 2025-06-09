@@ -109,6 +109,14 @@
     
 
 
+    <!-- http://example.org/hotel-ontology/1.0.0.3#HighADRVIP -->
+    
+    <owl:Class rdf:about="http://example.org/hotel-ontology/1.0.0.3#HighADRVIP">
+        <rdfs:subClassOf rdf:resource="http://example.org/hotel-ontology/1.0.0.3#Booking"/>
+    </owl:Class>
+
+
+
     <!-- http://example.org/hotel-ontology/1.0.0.3#HighCancellationRisk -->
 
     <owl:Class rdf:about="http://example.org/hotel-ontology/1.0.0.3#HighCancellationRisk"/>

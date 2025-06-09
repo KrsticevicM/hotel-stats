@@ -1,6 +1,6 @@
-PREFIX : <http://example.org/hotel-ontology/1.0.0.3#>
+PREFIX ex: <http://example.org/>
 
 SELECT ?booking
 WHERE {
-  ?booking a :LastMinuteBooking .
+  ?booking a ex:LastMinuteBooking .
 }

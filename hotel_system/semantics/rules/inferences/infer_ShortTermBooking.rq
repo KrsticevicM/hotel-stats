@@ -6,6 +6,6 @@ INSERT {
   ?booking a :ShortTermBooking .
 }
 WHERE {
-  ?booking ex:leadTime ?lt .
-  FILTER(xsd:integer(?lt) >= 3 && xsd:integer(?lt) <= 7)
+  ?booking ex:leadTime ?lead .
+  FILTER(xsd:integer(?lead) >= 3 && xsd:integer(?lead) <= 7)
 }

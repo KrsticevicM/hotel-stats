@@ -6,6 +6,6 @@ INSERT {
   ?booking a :LastMinuteBooking .
 }
 WHERE {
-  ?booking ex:leadTime ?lt .
-  FILTER(xsd:integer(?lt) < 3)
+  ?booking ex:leadTime ?lead .
+  FILTER(xsd:integer(?lead) < 3)
 }

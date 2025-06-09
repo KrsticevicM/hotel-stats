@@ -127,7 +127,7 @@ def get_timing_data():
 
         SELECT ?bookingType (COUNT(?booking) AS ?count)
         WHERE {
-            VALUES ?bookingType { :ShortTermBooking :LastMinuteBooking :PlannedBooking }
+            VALUES ?bookingType { ex:ShortTermBooking ex:LastMinuteBooking ex:PlannedBooking }
             ?booking a ?bookingType .
         }
         GROUP BY ?bookingType
@@ -154,7 +154,7 @@ def get_family_booking_counts(year):
 
         SELECT ?month (COUNT(?booking) AS ?count)
         WHERE {{
-            ?booking a :FamilyBooking ;
+            ?booking a ex:FamilyBooking ;
                      schema:arrivalDateYear "{year}"^^xsd:gYear ;
                      schema:arrivalDateMonth ?month .
         }}
@@ -210,7 +210,7 @@ def get_loyal_guests_month(month, year):
 
         SELECT ?booking ?name
         WHERE {{
-            ?booking a :LoyalGuestThisMonth ;
+            ?booking a ex:LoyalGuestThisMonth ;
                     <http://example.org/name> ?name ;
                     schema:arrivalDateMonth "{month}" ;
                     schema:arrivalDateYear "{year}"^^xsd:gYear .
@@ -237,7 +237,9 @@ def get_high_cancellation_risk_bookings():
     sparql = SPARQLWrapper(GRAPHDB_ENDPOINT)
 
     today = date.today().isoformat()
-    today = "2015-06-04"
+    
+    #for testing purposes
+    #today = "2015-06-04"
 
     sparql.setQuery(f"""
         PREFIX : <http://example.org/hotel-ontology/1.0.0.3#>
@@ -247,7 +249,7 @@ def get_high_cancellation_risk_bookings():
 
         SELECT ?booking ?name
         WHERE {{
-            ?booking a :HighCancellationRisk ;
+            ?booking a ex:HighCancellationRisk ;
                     <http://example.org/name> ?name ;	
                     schema:arrivalDateYear ?year ;
                     schema:arrivalDateMonth ?month ;
@@ -299,7 +301,9 @@ def get_total_upcoming():
     sparql = SPARQLWrapper(GRAPHDB_ENDPOINT)
 
     today = date.today().isoformat()
-    today = "2015-06-04"
+    
+    #for testing purposes
+    #today = "2015-06-04"
 
     sparql.setQuery(f"""
         PREFIX : <http://example.org/hotel-ontology/1.0.0.3#>
@@ -359,7 +363,7 @@ def get_vip(year):
 
         SELECT ?reservation_id ?name ?adr ?total_nights ?total_revenue
         WHERE {{
-            ?reservation_id a :HighADRVIP ;
+            ?reservation_id a ex:HighADRVIP ;
                     schema:arrivalDateYear "{year}"^^xsd:gYear ;
                     ex:name ?name ;
                     ex:adr ?adr ;
@@ -403,7 +407,7 @@ def get_vip_stats(year):
         SELECT (COUNT(?booking) AS ?total_bookings)
             (AVG(xsd:decimal(?adr)) AS ?average_adr)
         WHERE {{
-            ?booking a :HighADRVIP ;
+            ?booking a ex:HighADRVIP ;
                     schema:arrivalDateYear "{year}"^^xsd:gYear ;
                     ex:adr ?adr .
         }}
