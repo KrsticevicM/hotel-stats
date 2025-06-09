@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" prefix="schema: https://schema.org/">
 <head>
     {% load static %}
     <meta charset="UTF-8">
@@ -7,46 +7,46 @@
     <title>Manage Reservations</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
-<body>
+<body vocab="https://schema.org/">
 
 <div class="container h-reservation">
 
-    <h1>Manage Reservations</h1>
+    <h1 property="schema:name">Manage Reservations</h1>
 
     <!-- Add Reservation Section -->
     <div class="stats-card" id="addReservation">
         <h3>Add New Reservation</h3>
-        <form id="addReservationForm" class="h-entry">
+        <form id="addReservationForm" class="h-entry" typeof="schema:Reservation">
             <div class="form-group">
 
                 <label for="hotelType">Hotel Type</label>
-                <div class="radio-group p-hotel-type">
+                <div class="radio-group p-hotel-type" property="schema:reservationFor" typeof="schema:LodgingReservation">
                     <label><input type="radio" name="hotelType" value="Resort" id="resortHotel"> Resort Hotel</label>
                     <label><input type="radio" name="hotelType" value="City" id="cityHotel"> City Hotel</label>
                 </div>
 
                 <label for="name">Full Name</label>
-                <input type="text" id="name" name="name" class="p-name" placeholder="Enter full name" required>
+                <input type="text" id="name" name="name" class="p-name" placeholder="Enter full name" required property="schema:underName">
 
                 <label for="country">Country</label>
-                <select id="country" name="country" class="p-country-name">
+                <select id="country" name="country" class="p-country-name" property="schema:addressCountry">
                     <option value="" disabled selected>Select a Country</option>
                 </select>
 
                 <label for="arrivalDate">Arrival Date</label>
-                <input type="date" id="arrivalDate" name="arrivalDate" class="dt-start">
+                <input type="date" id="arrivalDate" name="arrivalDate" class="dt-start" property="schema:checkinTime">
 
                 <label for="leadTime">Lead Time (days in advance)</label>
-                <input type="number" id="leadTime" name="leadTime" min="0" required class="p-lead-time">
-                
+                <input type="number" id="leadTime" name="leadTime" min="0" required class="p-lead-time" property="schema:advanceBookingRequirement">
+
                 <label for="stays_in_week_nights">Stays in Week Nights</label>
-                <input type="number" id="stays_in_week_nights" name="stays_in_week_nights" class="p-week-nights">
+                <input type="number" id="stays_in_week_nights" name="stays_in_week_nights" class="p-week-nights" property="schema:numberOfNights">
 
                 <label for="stays_in_weekend_nights">Stays in Weekend Nights</label>
-                <input type="number" id="stays_in_weekend_nights" name="stays_in_weekend_nights" class="p-weekend-nights">
-                
+                <input type="number" id="stays_in_weekend_nights" name="stays_in_weekend_nights" class="p-weekend-nights" property="schema:duration">
+
                 <label for="meal">Meal Type</label>
-                <div class="radio-group p-meal">
+                <div class="radio-group p-meal" property="schema:mealService">
                     <label><input type="radio" name="meal" value="BB" id="bbMeal"> BB (Bed & Breakfast)</label>
                     <label><input type="radio" name="meal" value="HB" id="hbMeal"> HB (Half Board)</label>
                     <label><input type="radio" name="meal" value="SC" id="scMeal"> SC (Self Catering)</label>
@@ -55,19 +55,19 @@
                 </div>
 
                 <label for="adults">Number of Adults</label>
-                <input type="number" id="adults" name="adults" min="1" required class="p-num-adults">
+                <input type="number" id="adults" name="adults" min="1" required class="p-num-adults" property="schema:partySize">
 
                 <label for="children">Number of Children</label>
-                <input type="number" id="children" name="children" min="0" required class="p-num-children">
+                <input type="number" id="children" name="children" min="0" required class="p-num-children" property="schema:numberOfChildren">
 
                 <label for="babies">Number of Babies</label>
-                <input type="number" id="babies" name="babies" min="0" required class="p-num-babies">
+                <input type="number" id="babies" name="babies" min="0" required class="p-num-babies" property="schema:totalJobOpenings">
 
                 <label for="adr">ADR (Average Daily Rate)</label>
-                <input type="number" id="adr" name="adr" min="0" required class="p-adr">
+                <input type="number" id="adr" name="adr" min="0" required class="p-adr" property="schema:totalPrice">
 
                 <label for="isRepeatedGuest">Is Repeated Guest?</label>
-                <div class="radio-group p-repeated">
+                <div class="radio-group p-repeated" property="schema:customer">
                     <label><input type="radio" name="isRepeatedGuest" value="true" required> Yes</label>
                     <label><input type="radio" name="isRepeatedGuest" value="false" required> No</label>
                 </div>
@@ -80,36 +80,36 @@
     <!-- Get Reservation Section -->
     <div class="stats-card" id="getReservation">
         <h3>Get Reservation</h3>
-        <form id="getReservationForm" class="h-entry">
+        <form id="getReservationForm" class="h-entry" typeof="schema:Reservation">
             <div class="form-group">
                 <label for="getReservationID">Reservation ID</label>
-                <input type="text" id="getReservationID" name="reservation_id" required class="uid">
+                <input type="text" id="getReservationID" name="reservation_id" required class="uid" property="schema:reservationId">
 
                 <button type="submit" class="manage-link">Get Reservation</button>
             </div>
         </form>
-        <div id="reservationDetails" class="p-note"></div>
+        <div id="reservationDetails" class="p-note" property="schema:description"></div>
     </div>
 
     <!-- Modify Reservation Section -->
     <div class="stats-card" id="modifyReservation">
         <h3>Modify Reservation</h3>
-        <form id="modifyReservationForm" class="h-entry">
+        <form id="modifyReservationForm" class="h-entry" typeof="schema:Reservation">
             <div class="form-group">
                 <label for="modifyReservationID">Reservation ID</label>
-                <input type="text" id="modifyReservationID" name="reservation_id" required class="uid">
+                <input type="text" id="modifyReservationID" name="reservation_id" required class="uid" property="schema:reservationId">
 
                 <label for="modifyArrivalDate">Arrival Date</label>
-                <input type="date" id="modifyArrivalDate" name="arrival_date" class="dt-start">
+                <input type="date" id="modifyArrivalDate" name="arrival_date" class="dt-start" property="schema:checkinTime">
 
                 <label for="isCanceled">Is the reservation canceled?</label>
-                <div class="radio-group p-canceled">
+                <div class="radio-group p-canceled" property="schema:reservationStatus">
                     <label><input type="radio" name="isCanceled" value="1" id="yesCanceled"> Yes</label>
                     <label><input type="radio" name="isCanceled" value="0" id="noCanceled"> No</label>
                 </div>
 
                 <label for="modifyMeal">Meal Type</label>
-                <div class="radio-group p-meal">
+                <div class="radio-group p-meal" property="schema:mealService">
                     <label><input type="radio" name="meal" value="BB" id="bbMeal"> BB</label>
                     <label><input type="radio" name="meal" value="HB" id="hbMeal"> HB</label>
                     <label><input type="radio" name="meal" value="SC" id="scMeal"> SC</label>
@@ -125,10 +125,10 @@
     <!-- Delete Reservation Section -->
     <div class="stats-card" id="deleteReservation">
         <h3>Delete Reservation</h3>
-        <form id="deleteReservationForm" class="h-entry">
+        <form id="deleteReservationForm" class="h-entry" typeof="schema:Reservation">
             <div class="form-group">
                 <label for="deleteReservationID">Reservation ID</label>
-                <input type="text" id="deleteReservationID" name="reservation_id" required class="uid">
+                <input type="text" id="deleteReservationID" name="reservation_id" required class="uid" property="schema:reservationId">
 
                 <button type="submit" class="manage-link">Delete Reservation</button>
             </div>
@@ -136,7 +136,7 @@
     </div>
 
     <div class="manage-link-container">
-        <a href="/" class="u-url manage-link">Back to Dashboard</a>
+        <a href="/" class="u-url manage-link" property="schema:url">Back to Dashboard</a>
     </div>
 </div>
 
