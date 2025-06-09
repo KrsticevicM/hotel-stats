@@ -1,12 +1,13 @@
 PREFIX ex: <http://example.org/>
+PREFIX schema: <http://schema.org/>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-PREFIX : <http://example.org/hotel-ontology/1.0.0.3#>
 
 INSERT {
-  ?booking a :LoyalGuestThisMonth .
+  ?booking a ex:LoyalGuestThisMonth .
 }
 WHERE {
-  ?booking ex:isRepeatedGuest ?rep .
+  ?booking ex:isRepeatedGuest ?rep ;
+           schema:arrivalDateMonth ?month .
 
-  FILTER(xsd:integer(?rep) = 1)
+  FILTER(xsd:integer(?rep) = 1 && ?month = "May")
 }
