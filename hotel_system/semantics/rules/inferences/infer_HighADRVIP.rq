@@ -1,0 +1,17 @@
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX ex: <http://example.org/>
+PREFIX : <http://example.org/hotel-ontology/1.0.0.3#>
+
+INSERT {
+  ?booking a :HighADRVIP .
+}
+WHERE {
+  ?booking ex:adr ?adr ;
+           ex:weekNights ?wn ;
+           ex:weekendNights ?we .
+
+  BIND(xsd:integer(?wn) + xsd:integer(?we) AS ?nights)
+  BIND(xsd:decimal(?adr) * ?nights AS ?revenue)
+
+  FILTER(?adr > 100 && ?revenue > 500)
+}
