@@ -1,7 +1,7 @@
 from SPARQLWrapper import SPARQLWrapper, JSON
 
 # Configura el endpoint SPARQL
-sparql = SPARQLWrapper("http://localhost:7200/repositories/hotel-stats")
+sparql = SPARQLWrapper("http://localhost:7200/repositories/hotels")
 
 # Carga la consulta desde archivo
 with open("semantics/queries/get_ShortTermBooking.sparql", "r", encoding="utf-8") as file:
