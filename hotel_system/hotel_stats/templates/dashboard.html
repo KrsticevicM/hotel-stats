@@ -1,32 +1,32 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" prefix="schema: http://schema.org/ dcterms: http://purl.org/dc/terms/">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hotel Dashboard</title>
+    <title property="dcterms:title">Hotel Dashboard</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
-<body class="h-card">
-    <div class="container">
-        <h1 class="p-name">Hotel Statistics Dashboard</h1>
+<body class="h-card" vocab="http://schema.org/" typeof="schema:WebPage">
 
-        <!-- Stats Sections -->
+    <div class="container" typeof="schema:Hotel" resource="#HotelStats">
+        <h1 class="p-name" property="schema:name">Hotel Statistics Dashboard</h1>
+
         <div class="stats-section">
 
-            <!-- Most popular meal plans -->
-            <div class="stats-card h-item" id="mostPopularMeals">
-                <h3 class="p-name">Meal Plans</h3>
+            <!-- Meal Plans -->
+            <div class="stats-card h-item" id="mostPopularMeals" typeof="schema:Menu">
+                <h3 class="p-name" property="schema:name">Meal Plans</h3>
                 <canvas id="mealsChart"></canvas>
             </div>
 
-            <!-- Reservations by Month -->
-            <div class="stats-card h-event" id="reservationsByMonth">
-                <h3 class="p-name">Reservations per Month</h3>
-                <label for="yearSelect">Select Year:</label>
-                <select id="yearFilterRes" class="dt-start">
+            <!-- Reservations per Month -->
+            <div class="stats-card h-event" id="reservationsByMonth" typeof="schema:Event">
+                <h3 class="p-name" property="schema:name">Reservations per Month</h3>
+                <label for="yearFilterRes">Select Year:</label>
+                <select id="yearFilterRes" class="dt-start" property="schema:startDate">
                     {% for year in years %}
                         <option value="{{ year }}" {% if year == years|last %}selected{% endif %}>{{ year }}</option>
                     {% endfor %}
@@ -35,45 +35,45 @@
             </div>
 
             <!-- Average Stay per Month -->
-            <div class="stats-card h-statistics" id="averageStay">
-                <h3 class="p-name">Average Stay per Month</h3>
-                <label for="yearSelect">Select Year:</label>
-                <select id="yearFilterAvgStay" class="dt-start">
+            <div class="stats-card h-statistics" id="averageStay" typeof="schema:QuantitativeValue">
+                <h3 class="p-name" property="schema:name">Average Stay per Month</h3>
+                <label for="yearFilterAvgStay">Select Year:</label>
+                <select id="yearFilterAvgStay" class="dt-start" property="schema:startDate">
                     {% for year in years %}
                         <option value="{{ year }}" {% if year == years|last %}selected{% endif %}>{{ year }}</option>
                     {% endfor %}
                 </select>
-                <canvas id="averageStayChart"></canvas>
+                <canvas id="averageStayChart" property="schema:value"></canvas>
             </div>
 
             <!-- Top Countries -->
-            <div class="stats-card h-geo" id="topCountries">
-                <h3 class="p-name">Top Countries</h3>
+            <div class="stats-card h-geo" id="topCountries" typeof="schema:Place">
+                <h3 class="p-name" property="schema:name">Top Countries</h3>
                 <input type="text" id="countrySearch" placeholder="Search for a country..." />
                 <ul>
-                    <li class="placeholder">List of top 10 countries from all visitors</li>
+                    <li class="placeholder" property="schema:description">List of top 10 countries from all visitors</li>
                 </ul>
             </div>
 
             <!-- High Cancellation Risk -->
-            <div class="stats-card h-warning" id="high-cancel-card">
-                <h3 class="p-name">High Cancellation Risk</h3>
-                <p class="main-number p-value" id="high-risk-count"></p>
-                <p class="sub-text p-description" id="high-risk-percentage"></p>
-                <ul id="high-risk-list" class="scrollable-list"></ul>
+            <div class="stats-card h-warning" id="high-cancel-card" typeof="schema:Warning">
+                <h3 class="p-name" property="schema:name">High Cancellation Risk</h3>
+                <p id="high-risk-count" class="main-number p-value" property="schema:value"></p>
+                <p id="high-risk-percentage" class="sub-text p-description" property="schema:description"></p>
+                <ul id="high-risk-list" class="scrollable-list" property="schema:itemListElement"></ul>
             </div>
 
             <!-- Country Stats -->
-            <div class="stats-card h-geo" id="countryStats">
-                <h3 class="p-name">Country Details</h3>
-                <p class="p-note">Select a country to view additional statistics.</p>
+            <div class="stats-card h-geo" id="countryStats" typeof="schema:Place">
+                <h3 class="p-name" property="schema:name">Country Details</h3>
+                <p class="p-note" property="schema:description">Select a country to view additional statistics.</p>
             </div>
 
             <!-- Family Bookings -->
-            <div class="stats-card h-event" id="familyBookings">
-                <h3 class="p-name">Family Bookings per Month</h3>
-                <label for="yearSelect">Select Year:</label>
-                <select id="yearFilterFamily" class="dt-start">
+            <div class="stats-card h-event" id="familyBookings" typeof="schema:Event">
+                <h3 class="p-name" property="schema:name">Family Bookings per Month</h3>
+                <label for="yearFilterFamily">Select Year:</label>
+                <select id="yearFilterFamily" class="dt-start" property="schema:startDate">
                     {% for year in years %}
                         <option value="{{ year }}" {% if year == years|last %}selected{% endif %}>{{ year }}</option>
                     {% endfor %}
@@ -82,36 +82,36 @@
             </div>
 
             <!-- Loyal Guests -->
-            <div class="stats-card h-card" id="loyal-guests-card">
-                <h3 class="p-name">Loyal Guests This Month</h3>
-                <p id="loyal-guest-count" class="p-note">Number of loyal guests: <strong>...</strong></p>
-                <p id="loyal-guest-percent" class="p-note">Repeat guests: <strong>...</strong>% | New guests: <strong>...</strong>%</p>
-                <ul id="loyal-guest-list" class="scrollable-list"></ul>
+            <div class="stats-card h-card" id="loyal-guests-card" typeof="schema:Person">
+                <h3 class="p-name" property="schema:name">Loyal Guests This Month</h3>
+                <p id="loyal-guest-count" class="p-note" property="schema:description">Number of loyal guests: <strong>...</strong></p>
+                <p id="loyal-guest-percent" class="p-note" property="schema:description">Repeat guests: <strong>...</strong>% | New guests: <strong>...</strong>%</p>
+                <ul id="loyal-guest-list" class="scrollable-list" property="schema:itemListElement"></ul>
             </div>
 
             <!-- VIP Guests -->
-            <div class="stats-card h-card" id="vipGuestsCard">
-                <h3 class="p-name">Top VIPs with high ADR (Average Daily Rate)</h3>
+            <div class="stats-card h-card" id="vipGuestsCard" typeof="schema:Person">
+                <h3 class="p-name" property="schema:name">Top VIPs with high ADR (Average Daily Rate)</h3>
                 <label for="vipYearSelect">Select Year:</label>
-                <select id="vipYearSelect" class="dt-start">
+                <select id="vipYearSelect" class="dt-start" property="schema:startDate">
                     {% for year in years %}
                         <option value="{{ year }}" {% if year == years|last %}selected{% endif %}>{{ year }}</option>
                     {% endfor %}
                 </select>
-                <canvas id="vipRevenueChart"></canvas>
-                <div id="vipStatsSummary" class="p-summary"></div>
+                <canvas id="vipRevenueChart" property="schema:price"></canvas>
+                <div id="vipStatsSummary" class="p-summary" property="schema:description"></div>
             </div>
 
             <!-- Booking Behavior -->
-            <div class="stats-card h-event" id="bookingTimingCard">
-                <h3 class="p-name">Booking Planning Behavior</h3>
-                <canvas id="bookingTimingChart"></canvas>
+            <div class="stats-card h-event" id="bookingTimingCard" typeof="schema:Event">
+                <h3 class="p-name" property="schema:name">Booking Planning Behavior</h3>
+                <canvas id="bookingTimingChart" property="schema:organizer"></canvas>
             </div>
 
         </div>
 
         <div class="manage-link-container">
-            <a href="/manage-reservations" class="manage-link u-url">Manage Reservations</a>
+            <a href="/manage-reservations" class="manage-link u-url" property="schema:url">Manage Reservations</a>
         </div>
     </div>
 
@@ -127,7 +127,6 @@
         {{ top_countries|safe }}
     </script>
 
-    <!-- Add JS File -->
     <script src="{% static 'js/dashboard.js' %}"></script>
 </body>
 </html>
