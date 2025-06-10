@@ -3,7 +3,7 @@ import os
 
 # Config
 GRAPHDB_ENDPOINT = "http://localhost:7200/repositories/hotels/statements"
-INFERENCES_DIR = "semantics/rules/inferences"
+INFERENCES_DIR = "../rules/inferences"
 
 # Set up GraphDB connection
 sparql = SPARQLWrapper(GRAPHDB_ENDPOINT)
