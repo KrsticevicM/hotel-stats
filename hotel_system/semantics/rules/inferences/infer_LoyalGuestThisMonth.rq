@@ -3,7 +3,7 @@ PREFIX schema: <http://schema.org/>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
 INSERT {
-  ?booking a :LoyalGuestThisMonth .
+  ?booking a ex:LoyalGuestThisMonth .
 }
 WHERE {
   ?booking ex:isRepeatedGuest ?rep .
