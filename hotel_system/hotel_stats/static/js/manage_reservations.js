@@ -180,8 +180,8 @@ document.getElementById("modifyReservationForm").addEventListener("submit", func
     const isCanceled = document.querySelector('input[name="isCanceled"]:checked')?.value;
     const arrivalDate = document.getElementById("modifyArrivalDate").value;
     const mealType = document.querySelector('input[name="meal"]:checked')?.value;
-    //const staysInWeekNights = document.getElementById("modifyStaysInWeek").value;
-    //const staysInWeekendNights = document.getElementById("modifyStaysInWeekend").value;
+    const staysInWeekNights = document.getElementById("modifyStaysInWeek").value;
+    const staysInWeekendNights = document.getElementById("modifyStaysInWeekend").value;
     
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
@@ -219,13 +219,13 @@ document.getElementById("modifyReservationForm").addEventListener("submit", func
         formData.is_canceled = isCanceled;
     }
 
-    /*if (stays_in_week_nights !== undefined){
+    if (stays_in_week_nights !== undefined){
         formData.weekNights = staysInWeekNights;
     }
 
     if (stays_in_weekend_nights !== undefined){
         formData.weekendNights = staysInWeekendNights;
-    }*/
+    }
  
     fetch("/manage/update/", {
         method: "POST",

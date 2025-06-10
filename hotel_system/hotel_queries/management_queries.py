@@ -189,10 +189,9 @@ def update_reservation_query(data):
         "day": ("<http://example.org/arrivalDay>", '^^xsd:integer'),
         "is_canceled": ("<http://example.org/isCanceled>", '^^xsd:boolean'),
         "mealType": ("<http://schema.org/meal>", ''),
-    }
-    """    "weekendNights": ("<http://example.org/weekendNights>", '^^xsd:integer'),
+        "weekendNights": ("<http://example.org/weekendNights>", '^^xsd:integer'),
         "weekNights": ("<http://example.org/weekNights>", '^^xsd:integer')
-    }"""
+    }
 
     extra_delete_added = False 
     for key, (rdf_property, datatype) in field_mappings.items():
