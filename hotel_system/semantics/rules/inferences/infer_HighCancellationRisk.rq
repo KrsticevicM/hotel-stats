@@ -1,7 +1,7 @@
 PREFIX ex: <http://example.org/>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
-CONSTRUCT {
+INSERT {
   ?booking a :HighCancellationRisk .
 }
 WHERE {
