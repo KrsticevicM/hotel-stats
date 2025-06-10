@@ -6,8 +6,7 @@ INSERT {
   ?booking a ex:LoyalGuestThisMonth .
 }
 WHERE {
-  ?booking ex:isRepeatedGuest ?rep ;
-           schema:arrivalDateMonth ?month .
+  ?booking ex:isRepeatedGuest ?rep .
 
-  FILTER(xsd:integer(?rep) = 1 && ?month = "May")
+  FILTER(xsd:integer(?rep) = 1)
 }
