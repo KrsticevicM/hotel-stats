@@ -194,6 +194,7 @@ def update_reservation_query(data):
     }
 
     extra_delete_added = False 
+    check_list = ["weekendNights", "weekNights"]
     for key, (rdf_property, datatype) in field_mappings.items():
         value = data.get(key)
 
@@ -202,9 +203,9 @@ def update_reservation_query(data):
             insert_statements.append(f'{uri} {rdf_property} "{value}"{datatype} .')
             where_statements.append(f"OPTIONAL {{ {uri} {rdf_property} ?{key} . }}")
 
-            if key in ("weekendNights", "weekNight") and not extra_delete_added:
-                delete_statements.append(f"{uri} a ex:HighADRVIP .")
-                where_statements.append(f"OPTIONAL {{ {uri} a ex:HighADRVIP . }}")
+            if key in check_list and not extra_delete_added:
+                delete_statements.append(f"{uri} rdf:type ex:HighADRVIP .")
+                where_statements.append(f"OPTIONAL {{ {uri} rdf:type ex:HighADRVIP . }}")
                 extra_delete_added = True        
         
 
@@ -233,6 +234,7 @@ def update_reservation_query(data):
     try:
         response = sparql.query()
 
+        print(extra_delete_added)
         if extra_delete_added:
             run_highadr_query(uri)
 
