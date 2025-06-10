@@ -127,7 +127,7 @@ def get_timing_data():
 
         SELECT ?bookingType (COUNT(?booking) AS ?count)
         WHERE {
-            VALUES ?bookingType { ex:ShortTermBooking ex:LastMinuteBooking ex:PlannedBooking }
+            VALUES ?bookingType { :ShortTermBooking :LastMinuteBooking :PlannedBooking }
             ?booking a ?bookingType .
         }
         GROUP BY ?bookingType
@@ -154,7 +154,7 @@ def get_family_booking_counts(year):
 
         SELECT ?month (COUNT(?booking) AS ?count)
         WHERE {{
-            ?booking a ex:FamilyBooking ;
+            ?booking a :FamilyBooking ;
                      schema:arrivalDateYear "{year}"^^xsd:gYear ;
                      schema:arrivalDateMonth ?month .
         }}
@@ -210,7 +210,7 @@ def get_loyal_guests_month(month, year):
 
         SELECT ?booking ?name
         WHERE {{
-            ?booking a ex:LoyalGuestThisMonth ;
+            ?booking a :LoyalGuestThisMonth ;
                     <http://example.org/name> ?name ;
                     schema:arrivalDateMonth "{month}" ;
                     schema:arrivalDateYear "{year}"^^xsd:gYear .
@@ -249,7 +249,7 @@ def get_high_cancellation_risk_bookings():
 
         SELECT ?booking ?name
         WHERE {{
-            ?booking a ex:HighCancellationRisk ;
+            ?booking a :HighCancellationRisk ;
                     <http://example.org/name> ?name ;	
                     schema:arrivalDateYear ?year ;
                     schema:arrivalDateMonth ?month ;
@@ -363,7 +363,7 @@ def get_vip(year):
 
         SELECT ?reservation_id ?name ?adr ?total_nights ?total_revenue
         WHERE {{
-            ?reservation_id a ex:HighADRVIP ;
+            ?reservation_id a :HighADRVIP ;
                     schema:arrivalDateYear "{year}"^^xsd:gYear ;
                     ex:name ?name ;
                     ex:adr ?adr ;
@@ -407,7 +407,7 @@ def get_vip_stats(year):
         SELECT (COUNT(?booking) AS ?total_bookings)
             (AVG(xsd:decimal(?adr)) AS ?average_adr)
         WHERE {{
-            ?booking a ex:HighADRVIP ;
+            ?booking a :HighADRVIP ;
                     schema:arrivalDateYear "{year}"^^xsd:gYear ;
                     ex:adr ?adr .
         }}

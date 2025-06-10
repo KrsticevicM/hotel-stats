@@ -3,7 +3,7 @@ PREFIX ex: <http://example.org/>
 PREFIX : <http://example.org/hotel-ontology/1.0.0.3#>
 
 INSERT {
-  ?booking a ex:HighCancellationRisk .
+  ?booking a :HighCancellationRisk .
 }
 WHERE {
   VALUES ?booking { {{booking_uri}} }

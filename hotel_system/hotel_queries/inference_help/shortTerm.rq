@@ -8,6 +8,6 @@ INSERT {
 WHERE {
   VALUES ?booking { {{booking_uri}} }
   
-  ?booking ex:leadTime ?lead .
+  ?booking :leadTime ?lead .
   FILTER(xsd:integer(?lead) >= 3 && xsd:integer(?lead) <= 7)
 }
