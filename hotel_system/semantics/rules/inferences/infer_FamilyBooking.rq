@@ -11,5 +11,5 @@ WHERE {
            ex:children ?children ;
            ex:babies ?babies .
 
-  FILTER(xsd:integer(?adults) > 1 && (xsd:integer(?children) > 0 || xsd:integer(?babies) > 0))
+  FILTER(xsd:integer(?adults) > 2 && (xsd:integer(?children) > 0 || xsd:integer(?babies) > 0))
 }
